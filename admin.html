@@ -283,7 +283,12 @@ function saveOrderToFirebase(order) {
   db.ref('orders/' + order.id.replace('#','')).set(order);
 }
  
-function oTotal(o) { return o.products.reduce((s,p)=>s+p.qty*p.price,0); }
+function normalizeProducts(products) {
+  if (!products) return [];
+  if (Array.isArray(products)) return products;
+  return Object.values(products);
+}
+function oTotal(o) { return normalizeProducts(o.products).reduce((s,p)=>s+(p.qty||0)*(p.price||0),0); }
 function ini(n) { return n.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase(); }
 function bClass(s) { return {pendiente:'badge-pendiente',confirmado:'badge-confirmado',entregado:'badge-entregado',cancelado:'badge-cancelado'}[s]||''; }
 function bLabel(s) { return {pendiente:'Pendiente',confirmado:'Confirmado',entregado:'Entregado',cancelado:'Cancelado'}[s]||s; }
@@ -362,7 +367,7 @@ function render() {
  
   container.innerHTML = filtered.map(o => {
     const total = oTotal(o), isExp = expandedId===o.id, tab = activeTabs[o.id]||'info';
-    const prodRows = o.products.map(p=>`<div class="prod-row"><span>${p.name} × ${p.qty}</span><span>₡${(p.qty*p.price).toLocaleString('es-CR')}</span></div>`).join('');
+    const prodRows = normalizeProducts(o.products).map(p=>`<div class="prod-row"><span>${p.name} × ${p.qty}</span><span>₡${((p.qty||0)*(p.price||0)).toLocaleString('es-CR')}</span></div>`).join('');
  
     let statusActions = '';
     if(o.status==='pendiente') statusActions=`<button class="action-btn primary" onclick="changeStatus('${o.id}','confirmado',event)">Confirmar</button><button class="action-btn danger" onclick="changeStatus('${o.id}','cancelado',event)">Cancelar</button>`;
@@ -531,6 +536,11 @@ db.ref('orders').on('value', snapshot => {
   if (data) {
     orders = Object.values(data)
       .filter(o => o && o.id && o.name && o.products)
+      .map(o => ({
+        ...o,
+        products: Array.isArray(o.products) ? o.products : Object.values(o.products || {}),
+        log: Array.isArray(o.log) ? o.log : Object.values(o.log || {})
+      }))
       .sort((a,b) => {
         const da = a.createdAt ? new Date(a.createdAt) : 0;
         const db2 = b.createdAt ? new Date(b.createdAt) : 0;
