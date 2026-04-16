@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>amante*</title>
+  <link rel="stylesheet" href="https://use.typekit.net/ugn8yww.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init({ publicKey: '8iGTJcvt0Nj6wdFqM' }); })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #fffaf3; color: #1e1e1e; font-family: 'new-frank', 'Helvetica Neue', sans-serif; min-height: 100vh; }
+    a { color: inherit; }
+
+    /* NAV */
+    .nav { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid rgba(30,30,30,0.15); background: #fffaf3; position: sticky; top: 0; z-index: 10; display: flex; justify-content: center; }
+    .nav svg { height: 16px; width: auto; display: block; }
+
+    /* LAYOUT */
+    .wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+    /* TYPOGRAPHY */
+    .sec-label { font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,30,30,0.5); margin-bottom: 1rem; }
+    .divider { border: none; border-top: 0.5px solid rgba(30,30,30,0.15); margin: 1.75rem 0; }
+
+    /* FORM ELEMENTS */
+    .field { margin-bottom: 1.25rem; }
+    .label { display: block; font-size: 12px; color: rgba(30,30,30,0.55); margin-bottom: 6px; letter-spacing: 0.02em; }
+    .input, .select, .textarea {
+      width: 100%; font-family: 'new-frank', sans-serif; font-size: 14px;
+      color: #1e1e1e; background: #fffaf3;
+      border: 0.5px solid rgba(30,30,30,0.3); border-radius: 4px;
+      padding: 10px 12px; outline: none; transition: border-color 0.15s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .input::placeholder { color: rgba(30,30,30,0.35); }
+    .input:focus, .select:focus, .textarea:focus { border-color: #1e1e1e; box-shadow: 0 0 0 2px rgba(30,30,30,0.08); }
+    .select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%231e1e1e' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    .select:disabled { opacity: 0.38; cursor: not-allowed; }
+    .textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* CLIENT TOGGLE */
+    .client-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+    .client-btn {
+      border: 1px solid rgba(30,30,30,0.25); border-radius: 4px;
+      padding: 14px 12px; background: #fffaf3; cursor: pointer;
+      text-align: left; transition: all 0.15s;
+    }
+    .client-btn:hover { border-color: rgba(30,30,30,0.5); background: rgba(30,30,30,0.04); }
+    .client-btn.active { border: 1.5px solid rgba(30,30,30,0.4); background: #e8e4dd; }
+    .ct {
+      font-family: 'field-gothic-no-36', 'field-gothic', sans-serif;
+      font-size: 15px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.04em; color: #1e1e1e; display: block; margin-bottom: 3px;
+    }
+    .cs { font-size: 12px; color: rgba(30,30,30,0.55); }
+
+    /* BIZ CTA */
+    .biz-cta { display: none; border: 0.5px solid rgba(30,30,30,0.18); border-radius: 4px; background: #f0ece5; padding: 2rem; text-align: center; }
+    .biz-cta-title { font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: #1e1e1e; margin-bottom: 8px; }
+    .biz-cta-body { font-size: 13px; color: rgba(30,30,30,0.6); line-height: 1.7; margin-bottom: 1.5rem; }
+
+    /* PRODUCTS */
+    .product-cat-label {
+      font-family: 'field-gothic-no-36','field-gothic',sans-serif;
+      font-size: 13px; font-weight: 800; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #1e1e1e;
+      padding: 0.5rem 0 0.6rem; margin-top: 0.5rem;
+      border-bottom: 1px solid rgba(30,30,30,0.15);
+      margin-bottom: 10px;
+    }
+    .product-item { border: 0.5px solid rgba(30,30,30,0.15); border-radius: 4px; margin-bottom: 8px; background: #fffaf3; overflow: hidden; }
+    .product-item:hover { border-color: rgba(30,30,30,0.3); }
+    .product-item-top { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+    .product-img { width: 52px; height: 52px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+    .product-img-placeholder {
+      width: 52px; height: 52px; border-radius: 4px; flex-shrink: 0;
+      background: #e8e4dd; border: 0.5px solid rgba(30,30,30,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'field-gothic-no-36',sans-serif; font-size: 22px; font-weight: 800;
+      color: rgba(30,30,30,0.25);
+    }
+    .product-info-main { flex: 1; min-width: 0; }
+    .pname { font-size: 14px; font-weight: 500; color: #1e1e1e; }
+    .pdesc { font-size: 12px; color: rgba(30,30,30,0.45); margin-top: 1px; }
+    .pprice { font-size: 12px; color: rgba(30,30,30,0.5); margin-top: 3px; }
+    .product-sizes { border-top: 0.5px solid rgba(30,30,30,0.1); padding: 8px 14px 10px; display: flex; flex-direction: column; gap: 6px; }
+    .size-row { display: flex; align-items: center; justify-content: space-between; }
+    .size-row.sold-out { opacity: 0.45; }
+    .size-info { display: flex; align-items: center; gap: 10px; }
+    .size-label { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.05em; color: #1e1e1e; min-width: 24px; }
+    .size-stock { font-size: 12px; color: rgba(30,30,30,0.45); }
+    .agotado-tag { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: #ede8e1; color: rgba(30,30,30,0.5); padding: 2px 8px; border-radius: 20px; border: 0.5px solid rgba(30,30,30,0.12); }
+    .qty-ctrl { display: flex; align-items: center; gap: 10px; }
+    .qty-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 1px solid rgba(30,30,30,0.3); background: #fffaf3;
+      cursor: pointer; font-size: 18px; font-weight: 400; color: #1e1e1e;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1; transition: background 0.12s; flex-shrink: 0;
+    }
+    .qty-btn:hover { background: #e8e4dd; border-color: rgba(30,30,30,0.5); }
+    .qty-val { font-size: 15px; font-weight: 500; min-width: 22px; text-align: center; color: #1e1e1e; }
+
+    /* SUMMARY */
+    .summary-card { background: #f0ece5; border-radius: 4px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border: 0.5px solid rgba(30,30,30,0.1); }
+    .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: rgba(30,30,30,0.6); margin-bottom: 6px; }
+    .summary-total { display: flex; justify-content: space-between; font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 19px; font-weight: 800; color: #1e1e1e; border-top: 0.5px solid rgba(30,30,30,0.18); padding-top: 10px; margin-top: 8px; }
+
+    /* DELIVERY NOTICE */
+    .delivery-notice { display: none; border-radius: 4px; padding: 11px 14px; font-size: 13px; line-height: 1.6; margin-top: 8px; }
+    .delivery-notice.in-zone { background: #e8eedf; color: #2a4010; border: 0.5px solid rgba(42,64,16,0.3); }
+    .delivery-notice.out-zone { background: #f5e8d0; color: #5a3500; border: 0.5px solid rgba(90,53,0,0.3); }
+    .delivery-notice.far-zone { background: #f5e8d0; color: #5a3500; border: 0.5px solid rgba(90,53,0,0.3); }
+
+    /* BUTTONS */
+    .submit-btn {
+      width: 100%; padding: 14px; background: #1e1e1e; color: #fffaf3; border: none; border-radius: 4px;
+      font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 18px; font-weight: 800;
+      cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; transition: opacity 0.15s;
+    }
+    .submit-btn:hover { opacity: 0.82; }
+    .ghost-btn {
+      padding: 11px 24px; background: transparent; color: #1e1e1e;
+      border: 1px solid rgba(30,30,30,0.3); border-radius: 4px;
+      font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 14px;
+      font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: all 0.15s;
+    }
+    .ghost-btn:hover { background: #1e1e1e; color: #fffaf3; }
+
+    /* SUCCESS */
+    .success-screen { display: none; text-align: center; padding: 3rem 1rem; }
+    .success-mark { font-family: 'field-gothic-no-36', sans-serif; font-size: 56px; font-weight: 800; color: #1e1e1e; margin-bottom: 1rem; }
+    .success-screen h2 { font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #1e1e1e; margin-bottom: 10px; }
+    .success-screen p { font-size: 14px; color: rgba(30,30,30,0.55); line-height: 1.75; margin-bottom: 1.75rem; }
+
+    @media (max-width: 520px) {
+      .row2 { grid-template-columns: 1fr; }
+      .client-toggle { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.45 13.56">
+    <path fill="#1e1e1e" d="M66.99,10.91c-1.11,0-1.82-.46-1.82-.82,0-.99,1.17-1.4,1.17-2.81,0-.23-.27-.28-.55,0-1.33,1.33-2.11,3.62-3.23,3.62-.61,0-1.03-.36-1.03-.98,0-.97,3.26-2.79,3.64-3.22.5-.55.21-.7-.12-.7-.66,0-1.64,1.28-2.27,1.28s-1.25-.93-1.25-1.82c0-1.39.35-1.82.73-1.82.41,0,2.03,1.39,2.76,1.39.27,0,.5-.25.14-.61s-3.64-2-3.64-3.25c0-.57.27-1.17.83-1.17,1.12,0,2.1,2.8,3.26,3.64.8.57.8.23.72,0s-1.18-1.91-1.18-2.52.51-1.11,1.82-1.11,1.82.48,1.82.98-1.2,1.54-1.2,2.24c0,.2.04.42.18.42,1.04,0,2.58-3.64,3.66-3.64.4,0,1,.25,1,.81,0,.82-3.64,2.1-3.64,3.57,0,1.12,1.45-.74,2.4-.74.76,0,1.24.42,1.24,1.82,0,.62-.12,1.82-.89,1.82-.65,0-2.75-2.03-2.75-1.3,0,1.53,3.64,2.9,3.64,3.85,0,.21-.03,1.08-.82,1.08-1.09,0-2.34-3.64-3.51-3.64-.59,0,.69,1.6.69,2.37s-.71,1.26-1.82,1.26ZM2.25,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM27.54,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM44.08,6.45v6.11q0,.66-1.18.66t-1.19-.66c0-.46-.02-4.53-.02-5.78,0-1.49-.77-2.43-2-2.43s-2.65.94-2.65,3.52v4.69q0,.66-2.38.66h-1.73c-.99,0-.55-1.99-.95-1.99-.52,0-.56,2.33-3.76,2.33-2.4,0-2.59-2.32-2.59-1q0,.66-1.24.66-1.12,0-1.12-.66v-5.26c0-1.38-.49-2.95-1.99-2.95-1.64,0-2.46,1.6-2.46,2.92,0,1.13-.02,4.6-.02,5.27s0,.67-1.19.67-1.19,0-1.19-.66,0-3.3,0-5.29-.81-2.92-2.02-2.92c-1.75,0-2.63,1.6-2.63,2.92,0,1.98-.03,4.63-.03,5.29s0,.66-2.42.66h-1.69c-.99,0-.55-1.99-.98-1.99s-.58,2.33-3.74,2.33c-2.01,0-2.93-1.2-2.93-2.63s.75-2.48,2.95-3.14c2.2-.66,3.42-1.02,3.42-2.21s-1.01-1.46-1.87-1.46c-1.9,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.7-1.34,4.16-1.34,1.64,0,3.65.58,3.65,3.61,0,4.67-.03,6.03.4,6.03.32,0,.28-.73.28-1.31,0-1.32,0-6.91,0-7.27q0-.69,1.18-.69,1.16,0,1.16.69c0,2,.05,1.07.87.12.54-.62,1.38-1.18,2.84-1.18,2.9,0,2.78,2.27,3.17,2.27s.75-2.27,3.72-2.27c1.89,0,3.31,1.1,3.31,4.2,0,1.58.01,2.8.23,2.8.16,0,.39-.83,2-1.35,1.61-.52,3.79-.84,3.79-2.32,0-1.21-1.2-1.46-1.87-1.46-1.86,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.67-1.34,4.16-1.34,3.34,0,3.65,2.38,3.65,3.61,0,4.72-.04,6.04.38,6.04.31,0,.3-.5.3-1.32,0,.18,0-6.64,0-7.27q0-.66,1.23-.66,1.11,0,1.11.66c0,3.3-.03-1.06,3.73-1.06,1.34,0,2,.51,2.38.92.38.41,2.05-.44,2.91-2.51q.28-.66.85-.66.64,0,.64.66c0,.66,0,1.04,0,1.32q0,.63,2.68.63.33,0,.33,1.58c0,.43,1.19-1.94,4.24-1.94s4.65,1.71,4.65,4.96c0,.86,0,.49,0,.71q0,.62-1.61.62c-5.81,0-5.78,0-5.78.51,0,1.78,1.79,2.69,3.5,2.69,2.4,0,3.63-1.84,3.63-.52v1.09c0,.64-2.54,1.23-3.99,1.23-4.15,0-5.52-2.56-5.52-5.73,0-1.79.8-3.29.29-3.29h-1.95q-.47,0-.47,3.95c0,2.75.4,3.27,1.48,3.27s1.48-.52,1.48.14v.85c0,.82-1.51.81-2.06.81-2.53,0-3.29-1.26-3.29-4.92q0-4.1-.26-4.09c-.26,0-.35,0-.78,0-.29,0-.01.2-.01,1.91ZM54.72,4.01c-2.6,0-2.74,2.26-2.74,2.58s0,.33,2.64.33,2.64,0,2.64-.31.06-2.6-2.55-2.6Z"/>
+  </svg>
+</nav>
+
+<div class="wrap">
+  <!-- ORDER FORM -->
+  <div id="order-form">
+    <div class="sec-label" style="margin-top:0.5rem;">Estoy comprando como</div>
+    <div class="client-toggle">
+      <button class="client-btn active" onclick="setClient('individual')" id="btn-ind">
+        <span class="ct">Individual</span>
+        <span class="cs">Pedidos personales y regalos</span>
+      </button>
+      <button class="client-btn" onclick="setClient('business')" id="btn-biz">
+        <span class="ct">Empresa</span>
+        <span class="cs">Corporativo y mayoreo</span>
+      </button>
+    </div>
+
+    <div class="biz-cta" id="biz-cta">
+      <div class="biz-cta-title">Pedidos corporativos y mayoreo</div>
+      <div class="biz-cta-body">Ofrecemos precios especiales para empresas y clientes corporativos.<br>Contactanos directamente y preparamos una cotización personalizada.</div>
+      <button class="submit-btn" style="max-width:280px;" onclick="window.open('https://wa.me/50687042226?text='+encodeURIComponent('¡Hola! Me interesa conocer los precios mayoristas para mi empresa.'),'_blank')">Escribinos por WhatsApp</button>
+    </div>
+
+    <div id="ind-form">
+      <hr class="divider">
+      <div class="sec-label">Tus datos</div>
+      <div class="row2">
+        <div class="field">
+          <label class="label">Nombre</label>
+          <input class="input" type="text" id="f-name" placeholder="Tu nombre">
+        </div>
+        <div class="field">
+          <label class="label">WhatsApp / teléfono</label>
+          <input class="input" type="text" id="f-phone" placeholder="+506 8888 0000">
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-label">Productos</div>
+      <div id="f-products"></div>
+
+      <hr class="divider">
+      <div class="sec-label">Entrega</div>
+      <div class="row2">
+        <div class="field">
+          <label class="label">Fecha de entrega</label>
+          <input class="input" type="date" id="f-date">
+        </div>
+        <div class="field">
+          <label class="label">Horario preferido</label>
+          <select class="select" id="f-time">
+            <option value="">Seleccioná un horario</option>
+            <option>Mañana (8am – 12pm)</option>
+            <option>Tarde (12pm – 5pm)</option>
+            <option>Noche (5pm – 8pm)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Provincia</label>
+        <select class="select" id="f-prov" onchange="onProv()">
+          <option value="">Seleccioná una provincia</option>
+          <option>San José</option><option>Alajuela</option><option>Cartago</option>
+          <option>Heredia</option><option>Guanacaste</option><option>Puntarenas</option><option>Limón</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label">Cantón</label>
+        <select class="select" id="f-canton" onchange="onCanton()" disabled>
+          <option value="">Primero seleccioná una provincia</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label">Dirección exacta</label>
+        <textarea class="textarea" id="f-dir" placeholder="Ej: 100m norte de la iglesia, casa verde con portón negro..." rows="2"></textarea>
+      </div>
+      <div class="delivery-notice" id="f-notice"></div>
+
+      <div class="field" style="margin-top:1.25rem;">
+        <label class="label">Notas o solicitudes especiales</label>
+        <textarea class="textarea" id="f-notes" placeholder="Alergias, dedicatorias, empaque especial..."></textarea>
+      </div>
+
+      <hr class="divider">
+      <div class="sec-label">Resumen del pedido</div>
+      <div class="summary-card">
+        <div id="f-summary-lines"></div>
+        <div id="f-delivery-row" class="summary-row" style="display:none;"></div>
+        <div class="summary-total"><span>Total</span><span id="f-total">₡0</span></div>
+      </div>
+
+      <div class="field">
+        <label class="label">Método de pago</label>
+        <select class="select" id="f-payment">
+          <option value="">Seleccioná un método</option>
+          <option>Sinpe Móvil</option>
+          <option>Transferencia bancaria</option>
+        </select>
+      </div>
+      <button class="submit-btn" onclick="submitOrder()">Confirmar pedido</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="f-success">
+    <div class="success-mark">*</div>
+    <h2>¡Pedido recibido!</h2>
+    <p>Gracias. Confirmamos el pedido por WhatsApp en breve.<br>Las instrucciones de pago las recibís en tu número.</p>
+    <button class="ghost-btn" onclick="resetForm()">Hacer otro pedido</button>
+  </div>
+</div>
+
+<script>
+const CANTONES = {
+  'San José':['San José','Escazú','Desamparados','Puriscal','Tarrazú','Aserrí','Mora','Goicoechea','Santa Ana','Alajuelita','Vásquez de Coronado','Acosta','Tibás','Moravia','Montes de Oca','Turrubares','Dota','Curridabat','Pérez Zeledón','León Cortés'],
+  'Alajuela':['Alajuela','San Ramón','Grecia','San Mateo','Atenas','Naranjo','Palmares','Poás','Orotina','San Carlos','Zarcero','Sarchí','Upala','Los Chiles','Guatuso','Río Cuarto'],
+  'Cartago':['Cartago','Paraíso','La Unión','Jiménez','Turrialba','Alvarado','Oreamuno','El Guarco'],
+  'Heredia':['Heredia','Barva','Santo Domingo','Santa Bárbara','San Rafael','San Isidro','Belén','Flores','San Pablo','Sarapiquí'],
+  'Guanacaste':['Liberia','Nicoya','Santa Cruz','Bagaces','Carrillo','Cañas','Abangares','Tilarán','Nandayure','La Cruz','Hojancha'],
+  'Puntarenas':['Puntarenas','Esparza','Buenos Aires','Montes de Oro','Osa','Quepos','Golfito','Coto Brus','Parrita','Corredores','Garabito'],
+  'Limón':['Limón','Pococí','Siquirres','Talamanca','Matina','Guácimo']
+};
+const IN_ZONE = ['Escazú','Santa Ana'];
+const NEAR_ZONE = ['San José','Desamparados','Curridabat','Montes de Oca','Goicoechea','Tibás','Moravia','Mora','Alajuelita'];
+const CATALOG = [
+  {
+    category: 'Focaccias',
+    items: [
+      { id:'f1', name:'Clásica', desc:'', price:3000, image:null },
+      { id:'f2', name:'Aceitunas, Cebolla y Tomate', desc:'', price:3500, image:null },
+      { id:'f3', name:'Cebolla Caramelizada', desc:'', price:3500, image:null },
+      { id:'f4', name:'Mora', desc:'', price:3500, image:null },
+    ]
+  },
+  {
+    category: 'Galletas',
+    items: [
+      { id:'g1', name:'Galletas de Chocolate Chips', desc:'10 unidades', price:5000, image:null },
+    ]
+  },
+  {
+    category: 'Merch',
+    items: [
+      { id:'m1', name:'Focaccia T V01', desc:'Camiseta blanca', price:10000, image:null,
+        sizes: [
+          { label:'S', stock:3 },
+          { label:'M', stock:1 },
+          { label:'L', stock:0 },
+          { label:'XL', stock:2 },
+        ]
+      },
+    ]
+  }
+];
+
+// Flat index for summary/order use: { itemId+size: {item, size, qty} }
+let selections = {};
+let zoneStatus = 'unknown';
+let orderCounter = parseInt(localStorage.getItem('amante_counter') || '41');
+
+function selKey(id, size) { return size ? id+'__'+size : id; }
+
+function setClient(t) {
+  document.getElementById('btn-ind').classList.toggle('active', t==='individual');
+  document.getElementById('btn-biz').classList.toggle('active', t==='business');
+  document.getElementById('biz-cta').style.display = t==='business' ? 'block' : 'none';
+  document.getElementById('ind-form').style.display = t==='individual' ? 'block' : 'none';
+  if (t==='individual') renderProducts();
+}
+
+function renderProducts() {
+  const c = document.getElementById('f-products'); c.innerHTML = '';
+  CATALOG.forEach(cat => {
+    // Category label
+    const catLabel = document.createElement('div');
+    catLabel.className = 'product-cat-label';
+    catLabel.textContent = cat.category;
+    c.appendChild(catLabel);
+
+    cat.items.forEach(item => {
+      const wrap = document.createElement('div');
+      wrap.className = 'product-item';
+
+      // Image slot
+      const imgSlot = item.image
+        ? `<img src="${item.image}" class="product-img" alt="${item.name}">`
+        : `<div class="product-img-placeholder"><span>*</span></div>`;
+
+      if (item.sizes) {
+        // Sized item (merch)
+        const sizeButtons = item.sizes.map(s => {
+          const key = selKey(item.id, s.label);
+          const qty = selections[key]?.qty || 0;
+          const sold = s.stock === 0;
+          return `
+            <div class="size-row ${sold?'sold-out':''}">
+              <div class="size-info">
+                <span class="size-label">${s.label}</span>
+                ${sold ? '<span class="agotado-tag">Agotado</span>' : `<span class="size-stock">${s.stock} disponible${s.stock!==1?'s':''}</span>`}
+              </div>
+              ${sold ? '' : `
+              <div class="qty-ctrl">
+                <button class="qty-btn" onclick="chgSize('${item.id}','${s.label}',${s.stock},-1)" ${qty===0?'disabled':''}>−</button>
+                <span class="qty-val" id="qs_${item.id}_${s.label}">${qty}</span>
+                <button class="qty-btn" onclick="chgSize('${item.id}','${s.label}',${s.stock},1)" ${qty>=s.stock?'disabled':''}>+</button>
+              </div>`}
+            </div>`;
+        }).join('');
+
+        wrap.innerHTML = `
+          <div class="product-item-top">
+            ${imgSlot}
+            <div class="product-info-main">
+              <div class="pname">${item.name}</div>
+              ${item.desc ? `<div class="pdesc">${item.desc}</div>` : ''}
+              <div class="pprice">₡${item.price.toLocaleString('es-CR')} por unidad</div>
+            </div>
+          </div>
+          <div class="product-sizes">${sizeButtons}</div>`;
+      } else {
+        // Regular item
+        const key = selKey(item.id, null);
+        const qty = selections[key]?.qty || 0;
+        wrap.innerHTML = `
+          <div class="product-item-top">
+            ${imgSlot}
+            <div class="product-info-main" style="flex:1;">
+              <div class="pname">${item.name}</div>
+              ${item.desc ? `<div class="pdesc">${item.desc}</div>` : ''}
+              <div class="pprice">₡${item.price.toLocaleString('es-CR')}</div>
+            </div>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="chgItem('${item.id}', -1)">−</button>
+              <span class="qty-val" id="qi_${item.id}">${qty}</span>
+              <button class="qty-btn" onclick="chgItem('${item.id}', 1)">+</button>
+            </div>
+          </div>`;
+      }
+      c.appendChild(wrap);
+    });
+  });
+  updateSummary();
+}
+
+function chgItem(id, delta) {
+  const key = selKey(id, null);
+  const item = CATALOG.flatMap(c=>c.items).find(p=>p.id===id);
+  if (!item) return;
+  const cur = selections[key]?.qty || 0;
+  const next = Math.max(0, cur + delta);
+  if (next === 0) delete selections[key];
+  else selections[key] = { name: item.name, price: item.price, qty: next };
+  document.getElementById('qi_'+id).textContent = next;
+  updateSummary();
+}
+
+function chgSize(id, size, stock, delta) {
+  const key = selKey(id, size);
+  const item = CATALOG.flatMap(c=>c.items).find(p=>p.id===id);
+  if (!item) return;
+  const cur = selections[key]?.qty || 0;
+  const next = Math.max(0, Math.min(stock, cur + delta));
+  if (next === 0) delete selections[key];
+  else selections[key] = { name: item.name + ' — Talla ' + size, price: item.price, qty: next };
+  document.getElementById('qs_'+id+'_'+size).textContent = next;
+  // Update button states
+  const minusBtn = document.querySelector(`button[onclick="chgSize('${id}','${size}',${stock},-1)"]`);
+  const plusBtn = document.querySelector(`button[onclick="chgSize('${id}','${size}',${stock},1)"]`);
+  if (minusBtn) minusBtn.disabled = next === 0;
+  if (plusBtn) plusBtn.disabled = next >= stock;
+  updateSummary();
+}
+
+function updateSummary() {
+  let lines = '', total = 0;
+  Object.values(selections).forEach(s => {
+    if (s.qty > 0) {
+      const sub = s.qty * s.price;
+      total += sub;
+      lines += `<div class="summary-row"><span>${s.name} × ${s.qty}</span><span>₡${sub.toLocaleString('es-CR')}</span></div>`;
+    }
+  });
+  if (!lines) lines = '<div class="summary-row"><span style="font-style:italic;opacity:0.5;">Ningún producto seleccionado aún</span></div>';
+  document.getElementById('f-summary-lines').innerHTML = lines;
+  document.getElementById('f-total').textContent = '₡' + total.toLocaleString('es-CR') + (zoneStatus==='uber' ? ' + entrega' : '');
+}
+
+function onProv() {
+  const p = document.getElementById('f-prov').value;
+  const c = document.getElementById('f-canton');
+  c.innerHTML = '<option value="">Seleccioná un cantón</option>';
+  document.getElementById('f-notice').style.display = 'none';
+  document.getElementById('f-delivery-row').style.display = 'none';
+  zoneStatus = 'unknown'; updateSummary();
+  if(!p){c.disabled=true;return;}
+  (CANTONES[p]||[]).forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;c.appendChild(o);});
+  c.disabled = false;
+}
+
+function onCanton() {
+  const canton = document.getElementById('f-canton').value;
+  const notice = document.getElementById('f-notice');
+  const drow = document.getElementById('f-delivery-row');
+  drow.style.display = 'none';
+  if(!canton){notice.style.display='none';return;}
+  if(IN_ZONE.includes(canton)) {
+    zoneStatus='in';
+    notice.className='delivery-notice in-zone';
+    notice.innerHTML='✓ Hacemos entregas en '+canton+'. Entrega incluida sin costo adicional.';
+  } else if(NEAR_ZONE.includes(canton)) {
+    zoneStatus='uber';
+    notice.className='delivery-notice out-zone';
+    notice.innerHTML='<strong>Nota:</strong> '+canton+' está fuera de nuestra zona de entrega directa (Santa Ana y Escazú). Se coordinará un Uber para la entrega — costo adicional estimado entre <strong>₡2.000 y ₡6.000</strong> según la ubicación exacta. Confirmamos el monto con vos antes de procesar el pedido.';
+    drow.style.display='flex';
+    drow.innerHTML='<span>Entrega adicional (Uber — por confirmar)</span><span>₡2.000–₡6.000</span>';
+  } else {
+    zoneStatus='far';
+    notice.className='delivery-notice far-zone';
+    notice.innerHTML='<strong>Nota:</strong> Por el momento no contamos con entrega a '+canton+'. Contactanos por WhatsApp para coordinar y confirmar disponibilidad.';
+  }
+  notice.style.display='block'; updateSummary();
+}
+
+function submitOrder() {
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  const date=document.getElementById('f-date').value;
+  const time=document.getElementById('f-time').value;
+  const prov=document.getElementById('f-prov').value;
+  const canton=document.getElementById('f-canton').value;
+  const dir=document.getElementById('f-dir').value.trim();
+  const payment=document.getElementById('f-payment').value;
+  const notes=document.getElementById('f-notes').value.trim();
+  const selectedProducts = Object.values(selections).filter(p=>p.qty>0);
+  if(!name||!phone||!date||!time||!prov||!canton||!dir||!payment||!selectedProducts.length){
+    alert('Por favor completá todos los campos y seleccioná al menos un producto.');return;
+  }
+  orderCounter++;
+  localStorage.setItem('amante_counter', orderCounter);
+  const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const newOrder = {
+    id:'#0'+String(orderCounter).padStart(3,'0'),
+    name,phone,provincia:prov,canton,direccion:dir,
+    time,date:fmt(new Date(date+'T12:00:00')),
+    payment,paid:false,status:'pendiente',
+    products:selectedProducts,notes,log:[],isNew:true,
+    createdAt: new Date().toISOString()
+  };
+  const existing = JSON.parse(localStorage.getItem('amante_orders')||'[]');
+  existing.unshift(newOrder);
+  localStorage.setItem('amante_orders', JSON.stringify(existing));
+
+  // Build product summary for email
+  const productLines = selectedProducts.map(p => `${p.name} x${p.qty} — ₡${(p.qty*p.price).toLocaleString('es-CR')}`).join('\n');
+  const orderTotal = selectedProducts.reduce((s,p)=>s+p.qty*p.price, 0);
+
+  // Send email notification via EmailJS
+  emailjs.send('service_fjye1ov', 'template_pxeo0uw', {
+    order_id:    newOrder.id,
+    client_name: name,
+    client_phone: phone,
+    delivery_date: newOrder.date,
+    delivery_time: time,
+    location:    prov + ', ' + canton + ' — ' + dir,
+    products:    productLines,
+    total:       '₡' + orderTotal.toLocaleString('es-CR'),
+    payment:     payment,
+    notes:       notes || 'Ninguna',
+    to_email:    'amantecr25@gmail.com'
+  }).catch(err => console.warn('EmailJS error:', err));
+
+  document.getElementById('order-form').style.display='none';
+  document.getElementById('f-success').style.display='block';
+}
+
+function resetForm() {
+  selections={}; zoneStatus='unknown';
+  ['f-name','f-phone','f-date','f-dir','f-notes'].forEach(id=>document.getElementById(id).value='');
+  ['f-time','f-prov','f-payment'].forEach(id=>document.getElementById(id).value='');
+  const c=document.getElementById('f-canton');
+  c.innerHTML='<option value="">Primero seleccioná una provincia</option>'; c.disabled=true;
+  document.getElementById('f-notice').style.display='none';
+  document.getElementById('f-delivery-row').style.display='none';
+  document.getElementById('f-success').style.display='none';
+  document.getElementById('order-form').style.display='block';
+  renderProducts();
+}
+
+document.getElementById('f-date').min = new Date().toISOString().split('T')[0];
+renderProducts();
+</script>
+</body>
+</html>
