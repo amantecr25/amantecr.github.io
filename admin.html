@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>— </title>
   <link rel="stylesheet" href="https://use.typekit.net/ugn8yww.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    (function(){
+      const firebaseConfig = {
+        databaseURL: 'https://amante-b122b-default-rtdb.firebaseio.com'
+      };
+      firebase.initializeApp(firebaseConfig);
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { background: #fffaf3; color: #1e1e1e; font-family: 'new-frank','Helvetica Neue',sans-serif; min-height: 100vh; }
@@ -259,13 +269,18 @@ let orders = [];
 let activeFilter = 'todos';
 let expandedId = null;
 let activeTabs = {};
+const db = firebase.database();
 
 function loadOrders() {
-  orders = JSON.parse(localStorage.getItem('amante_orders') || '[]');
+  // no-op: data comes from Firebase listener
 }
 
 function saveOrders() {
-  localStorage.setItem('amante_orders', JSON.stringify(orders));
+  // no-op: each action saves directly to Firebase
+}
+
+function saveOrderToFirebase(order) {
+  db.ref('orders/' + order.id.replace('#','')).set(order);
 }
 
 function oTotal(o) { return o.products.reduce((s,p)=>s+p.qty*p.price,0); }
@@ -286,7 +301,9 @@ function changeStatus(id, newStatus, e) {
   e.stopPropagation();
   const label = {confirmado:'Pedido confirmado',entregado:'Marcado como entregado',cancelado:'Pedido cancelado'}[newStatus];
   orders = orders.map(o=>o.id===id?{...o,status:newStatus,isNew:false,log:[...o.log,{type:newStatus,label,time:FMTT()}]}:o);
-  saveOrders(); render();
+  const updated = orders.find(o=>o.id===id);
+  if (updated) saveOrderToFirebase(updated);
+  render();
 }
 
 function togglePaid(id, e) {
@@ -299,7 +316,9 @@ function togglePaid(id, e) {
       : o.log.filter((_,i)=>i!==o.log.map(l=>l.type).lastIndexOf('paid'));
     return {...o,paid:newPaid,log};
   });
-  saveOrders(); render();
+  const updated = orders.find(o=>o.id===id);
+  if (updated) saveOrderToFirebase(updated);
+  render();
 }
 
 function revertLog(id, idx, e) {
@@ -314,7 +333,9 @@ function revertLog(id, idx, e) {
     else if(entry.type==='cancelado') upd.status='pendiente';
     return {...o,...upd};
   });
-  saveOrders(); render();
+  const updated = orders.find(o=>o.id===id);
+  if (updated) saveOrderToFirebase(updated);
+  render();
 }
 
 function setFilter(f, btn) {
@@ -495,11 +516,8 @@ function saveManualOrder() {
     isManual: true
   };
 
-  loadOrders();
-  orders.unshift(newOrder);
-  saveOrders();
+  saveOrderToFirebase(newOrder);
   closeModal();
-  render();
 }
 
 // Close modal on overlay click
@@ -507,11 +525,16 @@ document.getElementById('manual-modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// Auto-refresh every 30 seconds to pick up new orders
-function refresh() { loadOrders(); render(); }
-loadOrders();
-render();
-setInterval(refresh, 30000);
+// Listen to Firebase in real time — updates dashboard instantly on any device
+db.ref('orders').on('value', snapshot => {
+  const data = snapshot.val();
+  if (data) {
+    orders = Object.values(data).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else {
+    orders = [];
+  }
+  render();
+});
 </script>
 </body>
 </html>
