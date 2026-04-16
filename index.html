@@ -21,18 +21,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { background: #fffaf3; color: #1e1e1e; font-family: 'new-frank', 'Helvetica Neue', sans-serif; min-height: 100vh; }
     a { color: inherit; }
-
+ 
     /* NAV */
     .nav { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid rgba(30,30,30,0.15); background: #fffaf3; position: sticky; top: 0; z-index: 10; display: flex; justify-content: center; }
     .nav svg { height: 16px; width: auto; display: block; }
-
+ 
     /* LAYOUT */
     .wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-
+ 
     /* TYPOGRAPHY */
     .sec-label { font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,30,30,0.5); margin-bottom: 1rem; }
     .divider { border: none; border-top: 0.5px solid rgba(30,30,30,0.15); margin: 1.75rem 0; }
-
+ 
     /* FORM ELEMENTS */
     .field { margin-bottom: 1.25rem; }
     .label { display: block; font-size: 12px; color: rgba(30,30,30,0.55); margin-bottom: 6px; letter-spacing: 0.02em; }
@@ -49,7 +49,7 @@
     .select:disabled { opacity: 0.38; cursor: not-allowed; }
     .textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
+ 
     /* CLIENT TOGGLE */
     .client-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
     .client-btn {
@@ -65,12 +65,12 @@
       letter-spacing: 0.04em; color: #1e1e1e; display: block; margin-bottom: 3px;
     }
     .cs { font-size: 12px; color: rgba(30,30,30,0.55); }
-
+ 
     /* BIZ CTA */
     .biz-cta { display: none; border: 0.5px solid rgba(30,30,30,0.18); border-radius: 4px; background: #f0ece5; padding: 2rem; text-align: center; }
     .biz-cta-title { font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: #1e1e1e; margin-bottom: 8px; }
     .biz-cta-body { font-size: 13px; color: rgba(30,30,30,0.6); line-height: 1.7; margin-bottom: 1.5rem; }
-
+ 
     /* PRODUCTS */
     .product-cat-label {
       font-family: 'field-gothic-no-36','field-gothic',sans-serif;
@@ -112,18 +112,18 @@
     }
     .qty-btn:hover { background: #e8e4dd; border-color: rgba(30,30,30,0.5); }
     .qty-val { font-size: 15px; font-weight: 500; min-width: 22px; text-align: center; color: #1e1e1e; }
-
+ 
     /* SUMMARY */
     .summary-card { background: #f0ece5; border-radius: 4px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border: 0.5px solid rgba(30,30,30,0.1); }
     .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: rgba(30,30,30,0.6); margin-bottom: 6px; }
     .summary-total { display: flex; justify-content: space-between; font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 19px; font-weight: 800; color: #1e1e1e; border-top: 0.5px solid rgba(30,30,30,0.18); padding-top: 10px; margin-top: 8px; }
-
+ 
     /* DELIVERY NOTICE */
     .delivery-notice { display: none; border-radius: 4px; padding: 11px 14px; font-size: 13px; line-height: 1.6; margin-top: 8px; }
     .delivery-notice.in-zone { background: #e8eedf; color: #2a4010; border: 0.5px solid rgba(42,64,16,0.3); }
     .delivery-notice.out-zone { background: #f5e8d0; color: #5a3500; border: 0.5px solid rgba(90,53,0,0.3); }
     .delivery-notice.far-zone { background: #f5e8d0; color: #5a3500; border: 0.5px solid rgba(90,53,0,0.3); }
-
+ 
     /* BUTTONS */
     .submit-btn {
       width: 100%; padding: 14px; background: #1e1e1e; color: #fffaf3; border: none; border-radius: 4px;
@@ -131,6 +131,19 @@
       cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; transition: opacity 0.15s;
     }
     .submit-btn:hover { opacity: 0.82; }
+    /* PICKUP TOGGLE */
+    .delivery-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+    .delivery-btn { border: 1px solid rgba(30,30,30,0.25); border-radius: 4px; padding: 12px 14px; background: #fffaf3; cursor: pointer; text-align: left; transition: all 0.15s; }
+    .delivery-btn:hover { border-color: rgba(30,30,30,0.5); background: rgba(30,30,30,0.04); }
+    .delivery-btn.active { border: 1.5px solid rgba(30,30,30,0.4); background: #e8e4dd; }
+    .delivery-btn .dt { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #1e1e1e; display: block; margin-bottom: 2px; }
+    .delivery-btn .ds { font-size: 12px; color: rgba(30,30,30,0.5); }
+ 
+    /* CONTACT BUTTON */
+    .contact-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px; background: transparent; color: #1e1e1e; border: 1px solid rgba(30,30,30,0.25); border-radius: 4px; font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; margin-top: 12px; transition: all 0.15s; text-decoration: none; }
+    .contact-btn:hover { background: #e8e4dd; border-color: rgba(30,30,30,0.4); }
+    .contact-btn svg { flex-shrink: 0; }
+ 
     .ghost-btn {
       padding: 11px 24px; background: transparent; color: #1e1e1e;
       border: 1px solid rgba(30,30,30,0.3); border-radius: 4px;
@@ -138,13 +151,13 @@
       font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: all 0.15s;
     }
     .ghost-btn:hover { background: #1e1e1e; color: #fffaf3; }
-
+ 
     /* SUCCESS */
     .success-screen { display: none; text-align: center; padding: 3rem 1rem; }
     .success-mark { font-family: 'field-gothic-no-36', sans-serif; font-size: 56px; font-weight: 800; color: #1e1e1e; margin-bottom: 1rem; }
     .success-screen h2 { font-family: 'field-gothic-no-36', 'field-gothic', sans-serif; font-size: 28px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #1e1e1e; margin-bottom: 10px; }
     .success-screen p { font-size: 14px; color: rgba(30,30,30,0.55); line-height: 1.75; margin-bottom: 1.75rem; }
-
+ 
     @media (max-width: 520px) {
       .row2 { grid-template-columns: 1fr; }
       .client-toggle { grid-template-columns: 1fr 1fr; }
@@ -152,13 +165,13 @@
   </style>
 </head>
 <body>
-
+ 
 <nav class="nav">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.45 13.56">
     <path fill="#1e1e1e" d="M66.99,10.91c-1.11,0-1.82-.46-1.82-.82,0-.99,1.17-1.4,1.17-2.81,0-.23-.27-.28-.55,0-1.33,1.33-2.11,3.62-3.23,3.62-.61,0-1.03-.36-1.03-.98,0-.97,3.26-2.79,3.64-3.22.5-.55.21-.7-.12-.7-.66,0-1.64,1.28-2.27,1.28s-1.25-.93-1.25-1.82c0-1.39.35-1.82.73-1.82.41,0,2.03,1.39,2.76,1.39.27,0,.5-.25.14-.61s-3.64-2-3.64-3.25c0-.57.27-1.17.83-1.17,1.12,0,2.1,2.8,3.26,3.64.8.57.8.23.72,0s-1.18-1.91-1.18-2.52.51-1.11,1.82-1.11,1.82.48,1.82.98-1.2,1.54-1.2,2.24c0,.2.04.42.18.42,1.04,0,2.58-3.64,3.66-3.64.4,0,1,.25,1,.81,0,.82-3.64,2.1-3.64,3.57,0,1.12,1.45-.74,2.4-.74.76,0,1.24.42,1.24,1.82,0,.62-.12,1.82-.89,1.82-.65,0-2.75-2.03-2.75-1.3,0,1.53,3.64,2.9,3.64,3.85,0,.21-.03,1.08-.82,1.08-1.09,0-2.34-3.64-3.51-3.64-.59,0,.69,1.6.69,2.37s-.71,1.26-1.82,1.26ZM2.25,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM27.54,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM44.08,6.45v6.11q0,.66-1.18.66t-1.19-.66c0-.46-.02-4.53-.02-5.78,0-1.49-.77-2.43-2-2.43s-2.65.94-2.65,3.52v4.69q0,.66-2.38.66h-1.73c-.99,0-.55-1.99-.95-1.99-.52,0-.56,2.33-3.76,2.33-2.4,0-2.59-2.32-2.59-1q0,.66-1.24.66-1.12,0-1.12-.66v-5.26c0-1.38-.49-2.95-1.99-2.95-1.64,0-2.46,1.6-2.46,2.92,0,1.13-.02,4.6-.02,5.27s0,.67-1.19.67-1.19,0-1.19-.66,0-3.3,0-5.29-.81-2.92-2.02-2.92c-1.75,0-2.63,1.6-2.63,2.92,0,1.98-.03,4.63-.03,5.29s0,.66-2.42.66h-1.69c-.99,0-.55-1.99-.98-1.99s-.58,2.33-3.74,2.33c-2.01,0-2.93-1.2-2.93-2.63s.75-2.48,2.95-3.14c2.2-.66,3.42-1.02,3.42-2.21s-1.01-1.46-1.87-1.46c-1.9,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.7-1.34,4.16-1.34,1.64,0,3.65.58,3.65,3.61,0,4.67-.03,6.03.4,6.03.32,0,.28-.73.28-1.31,0-1.32,0-6.91,0-7.27q0-.69,1.18-.69,1.16,0,1.16.69c0,2,.05,1.07.87.12.54-.62,1.38-1.18,2.84-1.18,2.9,0,2.78,2.27,3.17,2.27s.75-2.27,3.72-2.27c1.89,0,3.31,1.1,3.31,4.2,0,1.58.01,2.8.23,2.8.16,0,.39-.83,2-1.35,1.61-.52,3.79-.84,3.79-2.32,0-1.21-1.2-1.46-1.87-1.46-1.86,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.67-1.34,4.16-1.34,3.34,0,3.65,2.38,3.65,3.61,0,4.72-.04,6.04.38,6.04.31,0,.3-.5.3-1.32,0,.18,0-6.64,0-7.27q0-.66,1.23-.66,1.11,0,1.11.66c0,3.3-.03-1.06,3.73-1.06,1.34,0,2,.51,2.38.92.38.41,2.05-.44,2.91-2.51q.28-.66.85-.66.64,0,.64.66c0,.66,0,1.04,0,1.32q0,.63,2.68.63.33,0,.33,1.58c0,.43,1.19-1.94,4.24-1.94s4.65,1.71,4.65,4.96c0,.86,0,.49,0,.71q0,.62-1.61.62c-5.81,0-5.78,0-5.78.51,0,1.78,1.79,2.69,3.5,2.69,2.4,0,3.63-1.84,3.63-.52v1.09c0,.64-2.54,1.23-3.99,1.23-4.15,0-5.52-2.56-5.52-5.73,0-1.79.8-3.29.29-3.29h-1.95q-.47,0-.47,3.95c0,2.75.4,3.27,1.48,3.27s1.48-.52,1.48.14v.85c0,.82-1.51.81-2.06.81-2.53,0-3.29-1.26-3.29-4.92q0-4.1-.26-4.09c-.26,0-.35,0-.78,0-.29,0-.01.2-.01,1.91ZM54.72,4.01c-2.6,0-2.74,2.26-2.74,2.58s0,.33,2.64.33,2.64,0,2.64-.31.06-2.6-2.55-2.6Z"/>
   </svg>
 </nav>
-
+ 
 <div class="wrap">
   <!-- ORDER FORM -->
   <div id="order-form">
@@ -173,13 +186,13 @@
         <span class="cs">Corporativo y mayoreo</span>
       </button>
     </div>
-
+ 
     <div class="biz-cta" id="biz-cta">
       <div class="biz-cta-title">Pedidos corporativos y mayoreo</div>
       <div class="biz-cta-body">Ofrecemos precios especiales para empresas y clientes corporativos.<br>Contactanos directamente y preparamos una cotización personalizada.</div>
       <button class="submit-btn" style="max-width:280px;" onclick="window.open('https://wa.me/50687042226?text='+encodeURIComponent('¡Hola! Me interesa conocer los precios mayoristas para mi empresa.'),'_blank')">Escribinos por WhatsApp</button>
     </div>
-
+ 
     <div id="ind-form">
       <hr class="divider">
       <div class="sec-label">Tus datos</div>
@@ -193,16 +206,28 @@
           <input class="input" type="text" id="f-phone" placeholder="+506 8888 0000">
         </div>
       </div>
-
+ 
       <hr class="divider">
       <div class="sec-label">Productos</div>
       <div id="f-products"></div>
-
+ 
       <hr class="divider">
       <div class="sec-label">Entrega</div>
+ 
+      <div class="delivery-toggle">
+        <button class="delivery-btn active" onclick="setDeliveryMode('delivery')" id="btn-delivery">
+          <span class="dt">Envío</span>
+          <span class="ds">Entrega a domicilio</span>
+        </button>
+        <button class="delivery-btn" onclick="setDeliveryMode('pickup')" id="btn-pickup">
+          <span class="dt">Recoger</span>
+          <span class="ds">Retiro en punto acordado</span>
+        </button>
+      </div>
+ 
       <div class="row2">
         <div class="field">
-          <label class="label">Fecha de entrega</label>
+          <label class="label">Fecha</label>
           <input class="input" type="date" id="f-date">
         </div>
         <div class="field">
@@ -215,31 +240,34 @@
           </select>
         </div>
       </div>
-      <div class="field">
-        <label class="label">Provincia</label>
-        <select class="select" id="f-prov" onchange="onProv()">
-          <option value="">Seleccioná una provincia</option>
-          <option>San José</option><option>Alajuela</option><option>Cartago</option>
-          <option>Heredia</option><option>Guanacaste</option><option>Puntarenas</option><option>Limón</option>
-        </select>
+ 
+      <div id="address-fields">
+        <div class="field">
+          <label class="label">Provincia</label>
+          <select class="select" id="f-prov" onchange="onProv()">
+            <option value="">Seleccioná una provincia</option>
+            <option>San José</option><option>Alajuela</option><option>Cartago</option>
+            <option>Heredia</option><option>Guanacaste</option><option>Puntarenas</option><option>Limón</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Cantón</label>
+          <select class="select" id="f-canton" onchange="onCanton()" disabled>
+            <option value="">Primero seleccioná una provincia</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Dirección exacta</label>
+          <textarea class="textarea" id="f-dir" placeholder="Ej: 100m norte de la iglesia, casa verde con portón negro..." rows="2"></textarea>
+        </div>
+        <div class="delivery-notice" id="f-notice"></div>
       </div>
-      <div class="field">
-        <label class="label">Cantón</label>
-        <select class="select" id="f-canton" onchange="onCanton()" disabled>
-          <option value="">Primero seleccioná una provincia</option>
-        </select>
-      </div>
-      <div class="field">
-        <label class="label">Dirección exacta</label>
-        <textarea class="textarea" id="f-dir" placeholder="Ej: 100m norte de la iglesia, casa verde con portón negro..." rows="2"></textarea>
-      </div>
-      <div class="delivery-notice" id="f-notice"></div>
-
+ 
       <div class="field" style="margin-top:1.25rem;">
         <label class="label">Notas o solicitudes especiales</label>
         <textarea class="textarea" id="f-notes" placeholder="Alergias, dedicatorias, empaque especial..."></textarea>
       </div>
-
+ 
       <hr class="divider">
       <div class="sec-label">Resumen del pedido</div>
       <div class="summary-card">
@@ -247,7 +275,7 @@
         <div id="f-delivery-row" class="summary-row" style="display:none;"></div>
         <div class="summary-total"><span>Total</span><span id="f-total">₡0</span></div>
       </div>
-
+ 
       <div class="field">
         <label class="label">Método de pago</label>
         <select class="select" id="f-payment">
@@ -257,9 +285,13 @@
         </select>
       </div>
       <button class="submit-btn" onclick="submitOrder()">Confirmar pedido</button>
+      <a class="contact-btn" href="https://wa.me/50687042226?text=" onclick="this.href='https://wa.me/50687042226?text='+encodeURIComponent('¡Hola! Tengo una consulta sobre mi pedido.')" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1e1e1e"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        ¿Tenés alguna consulta? Escribinos
+      </a>
     </div>
   </div>
-
+ 
   <!-- SUCCESS -->
   <div class="success-screen" id="f-success">
     <div class="success-mark">*</div>
@@ -268,7 +300,7 @@
     <button class="ghost-btn" onclick="resetForm()">Hacer otro pedido</button>
   </div>
 </div>
-
+ 
 <script>
 const CANTONES = {
   'San José':['San José','Escazú','Desamparados','Puriscal','Tarrazú','Aserrí','Mora','Goicoechea','Santa Ana','Alajuelita','Vásquez de Coronado','Acosta','Tibás','Moravia','Montes de Oca','Turrubares','Dota','Curridabat','Pérez Zeledón','León Cortés'],
@@ -311,14 +343,31 @@ const CATALOG = [
     ]
   }
 ];
-
+ 
 // Flat index for summary/order use: { itemId+size: {item, size, qty} }
 let selections = {};
 let zoneStatus = 'unknown';
+let deliveryMode = 'delivery';
+ 
+function setDeliveryMode(mode) {
+  deliveryMode = mode;
+  document.getElementById('btn-delivery').classList.toggle('active', mode==='delivery');
+  document.getElementById('btn-pickup').classList.toggle('active', mode==='pickup');
+  const addrFields = document.getElementById('address-fields');
+  addrFields.style.display = mode==='pickup' ? 'none' : 'block';
+  if (mode==='pickup') {
+    document.getElementById('f-notice').style.display='none';
+    document.getElementById('f-delivery-row').style.display='none';
+    zoneStatus='pickup';
+  } else {
+    zoneStatus='unknown';
+  }
+  updateSummary();
+}
 let orderCounter = 41; // will sync from Firebase on load
-
+ 
 function selKey(id, size) { return size ? id+'__'+size : id; }
-
+ 
 function setClient(t) {
   document.getElementById('btn-ind').classList.toggle('active', t==='individual');
   document.getElementById('btn-biz').classList.toggle('active', t==='business');
@@ -326,7 +375,7 @@ function setClient(t) {
   document.getElementById('ind-form').style.display = t==='individual' ? 'block' : 'none';
   if (t==='individual') renderProducts();
 }
-
+ 
 function renderProducts() {
   const c = document.getElementById('f-products'); c.innerHTML = '';
   CATALOG.forEach(cat => {
@@ -335,16 +384,16 @@ function renderProducts() {
     catLabel.className = 'product-cat-label';
     catLabel.textContent = cat.category;
     c.appendChild(catLabel);
-
+ 
     cat.items.forEach(item => {
       const wrap = document.createElement('div');
       wrap.className = 'product-item';
-
+ 
       // Image slot
       const imgSlot = item.image
         ? `<img src="${item.image}" class="product-img" alt="${item.name}">`
         : `<div class="product-img-placeholder"><span>*</span></div>`;
-
+ 
       if (item.sizes) {
         // Sized item (merch)
         const sizeButtons = item.sizes.map(s => {
@@ -365,7 +414,7 @@ function renderProducts() {
               </div>`}
             </div>`;
         }).join('');
-
+ 
         wrap.innerHTML = `
           <div class="product-item-top">
             ${imgSlot}
@@ -400,7 +449,7 @@ function renderProducts() {
   });
   updateSummary();
 }
-
+ 
 function chgItem(id, delta) {
   const key = selKey(id, null);
   const item = CATALOG.flatMap(c=>c.items).find(p=>p.id===id);
@@ -412,7 +461,7 @@ function chgItem(id, delta) {
   document.getElementById('qi_'+id).textContent = next;
   updateSummary();
 }
-
+ 
 function chgSize(id, size, stock, delta) {
   const key = selKey(id, size);
   const item = CATALOG.flatMap(c=>c.items).find(p=>p.id===id);
@@ -429,7 +478,7 @@ function chgSize(id, size, stock, delta) {
   if (plusBtn) plusBtn.disabled = next >= stock;
   updateSummary();
 }
-
+ 
 function updateSummary() {
   let lines = '', total = 0;
   Object.values(selections).forEach(s => {
@@ -443,7 +492,7 @@ function updateSummary() {
   document.getElementById('f-summary-lines').innerHTML = lines;
   document.getElementById('f-total').textContent = '₡' + total.toLocaleString('es-CR') + (zoneStatus==='uber' ? ' + entrega' : '');
 }
-
+ 
 function onProv() {
   const p = document.getElementById('f-prov').value;
   const c = document.getElementById('f-canton');
@@ -455,7 +504,7 @@ function onProv() {
   (CANTONES[p]||[]).forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;c.appendChild(o);});
   c.disabled = false;
 }
-
+ 
 function onCanton() {
   const canton = document.getElementById('f-canton').value;
   const notice = document.getElementById('f-notice');
@@ -479,23 +528,24 @@ function onCanton() {
   }
   notice.style.display='block'; updateSummary();
 }
-
+ 
 function submitOrder() {
   const name=document.getElementById('f-name').value.trim();
   const phone=document.getElementById('f-phone').value.trim();
   const date=document.getElementById('f-date').value;
   const time=document.getElementById('f-time').value;
-  const prov=document.getElementById('f-prov').value;
-  const canton=document.getElementById('f-canton').value;
-  const dir=document.getElementById('f-dir').value.trim();
+  const prov = deliveryMode==='pickup' ? 'Retiro' : document.getElementById('f-prov').value;
+  const canton = deliveryMode==='pickup' ? 'Retiro' : document.getElementById('f-canton').value;
+  const dir = deliveryMode==='pickup' ? 'Cliente retira en punto acordado' : document.getElementById('f-dir').value.trim();
   const payment=document.getElementById('f-payment').value;
   const notes=document.getElementById('f-notes').value.trim();
   const selectedProducts = Object.values(selections).filter(p=>p.qty>0);
-  if(!name||!phone||!date||!time||!prov||!canton||!dir||!payment||!selectedProducts.length){
+  const addressValid = deliveryMode==='pickup' || (prov && canton && dir);
+  if(!name||!phone||!date||!time||!addressValid||!payment||!selectedProducts.length){
     alert('Por favor completá todos los campos y seleccioná al menos un producto.');return;
   }
   const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
-
+ 
   // Get current counter from Firebase then save order
   const db = firebase.database();
   const counterRef = db.ref('meta/orderCounter');
@@ -511,10 +561,24 @@ function submitOrder() {
       log: [], isNew: true,
       createdAt: new Date().toISOString()
     };
-
+ 
+    // Deduct merch stock from Firebase
+    selectedProducts.forEach(p => {
+      if (p.size) {
+        const itemId = p.itemId || Object.keys(stockData || {}).find(k => p.name.includes(k));
+        // Parse size from name e.g. "Focaccia T V01 — Talla S"
+        const sizeMatch = p.name.match(/Talla ([A-Z]+)/);
+        if (sizeMatch) {
+          const itemKey = 'm1'; // merch item key
+          const sizeKey = sizeMatch[1];
+          db.ref('stock/' + itemKey + '/' + sizeKey).transaction(cur => Math.max(0, (cur||0) - p.qty));
+        }
+      }
+    });
+ 
     db.ref('orders/' + newOrder.id.replace('#','')).set(newOrder, saveErr => {
       if (saveErr) { alert('Error al guardar el pedido. Intentá de nuevo.'); return; }
-
+ 
       // Send email notification via EmailJS
       const productLines = selectedProducts.map(p => p.name + ' x' + p.qty + ' — ₡' + (p.qty*p.price).toLocaleString('es-CR')).join('\n');
       const orderTotal = selectedProducts.reduce((s,p)=>s+p.qty*p.price, 0);
@@ -531,15 +595,18 @@ function submitOrder() {
         notes:        notes || 'Ninguna',
         to_email:     'amantecr25@gmail.com'
       }).catch(err => console.warn('EmailJS error:', err));
-
+ 
       document.getElementById('order-form').style.display='none';
       document.getElementById('f-success').style.display='block';
     });
   });
 }
-
+ 
 function resetForm() {
-  selections={}; zoneStatus='unknown';
+  selections={}; zoneStatus='unknown'; deliveryMode='delivery';
+  document.getElementById('btn-delivery').classList.add('active');
+  document.getElementById('btn-pickup').classList.remove('active');
+  document.getElementById('address-fields').style.display='block';
   ['f-name','f-phone','f-date','f-dir','f-notes'].forEach(id=>document.getElementById(id).value='');
   ['f-time','f-prov','f-payment'].forEach(id=>document.getElementById(id).value='');
   const c=document.getElementById('f-canton');
@@ -550,9 +617,26 @@ function resetForm() {
   document.getElementById('order-form').style.display='block';
   renderProducts();
 }
-
+ 
 document.getElementById('f-date').min = new Date().toISOString().split('T')[0];
-renderProducts();
+ 
+// Load merch stock from Firebase in real time
+const db = firebase.database();
+db.ref('stock').on('value', snapshot => {
+  const stockData = snapshot.val() || {};
+  // Update CATALOG merch sizes with live stock
+  CATALOG.forEach(cat => {
+    cat.items.forEach(item => {
+      if (item.sizes && stockData[item.id]) {
+        item.sizes = item.sizes.map(s => ({
+          ...s,
+          stock: stockData[item.id][s.label] !== undefined ? stockData[item.id][s.label] : s.stock
+        }));
+      }
+    });
+  });
+  renderProducts();
+});
 </script>
 </body>
 </html>
