@@ -6,8 +6,16 @@
   <title>amante*</title>
   <link rel="stylesheet" href="https://use.typekit.net/ugn8yww.css">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script>
-    (function(){ emailjs.init({ publicKey: '8iGTJcvt0Nj6wdFqM' }); })();
+    (function(){
+      emailjs.init({ publicKey: '8iGTJcvt0Nj6wdFqM' });
+      const firebaseConfig = {
+        databaseURL: 'https://amante-b122b-default-rtdb.firebaseio.com'
+      };
+      firebase.initializeApp(firebaseConfig);
+    })();
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -307,7 +315,7 @@ const CATALOG = [
 // Flat index for summary/order use: { itemId+size: {item, size, qty} }
 let selections = {};
 let zoneStatus = 'unknown';
-let orderCounter = parseInt(localStorage.getItem('amante_counter') || '41');
+let orderCounter = 41; // will sync from Firebase on load
 
 function selKey(id, size) { return size ? id+'__'+size : id; }
 
@@ -486,42 +494,48 @@ function submitOrder() {
   if(!name||!phone||!date||!time||!prov||!canton||!dir||!payment||!selectedProducts.length){
     alert('Por favor completá todos los campos y seleccioná al menos un producto.');return;
   }
-  orderCounter++;
-  localStorage.setItem('amante_counter', orderCounter);
   const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
-  const newOrder = {
-    id:'#0'+String(orderCounter).padStart(3,'0'),
-    name,phone,provincia:prov,canton,direccion:dir,
-    time,date:fmt(new Date(date+'T12:00:00')),
-    payment,paid:false,status:'pendiente',
-    products:selectedProducts,notes,log:[],isNew:true,
-    createdAt: new Date().toISOString()
-  };
-  const existing = JSON.parse(localStorage.getItem('amante_orders')||'[]');
-  existing.unshift(newOrder);
-  localStorage.setItem('amante_orders', JSON.stringify(existing));
 
-  // Build product summary for email
-  const productLines = selectedProducts.map(p => `${p.name} x${p.qty} — ₡${(p.qty*p.price).toLocaleString('es-CR')}`).join('\n');
-  const orderTotal = selectedProducts.reduce((s,p)=>s+p.qty*p.price, 0);
+  // Get current counter from Firebase then save order
+  const db = firebase.database();
+  const counterRef = db.ref('meta/orderCounter');
+  counterRef.transaction(current => (current || 41) + 1, (error, committed, snapshot) => {
+    if (error || !committed) { alert('Error al enviar el pedido. Intentá de nuevo.'); return; }
+    const newCounter = snapshot.val();
+    const newOrder = {
+      id: '#0' + String(newCounter).padStart(3,'0'),
+      name, phone, provincia: prov, canton, direccion: dir,
+      time, date: fmt(new Date(date+'T12:00:00')),
+      payment, paid: false, status: 'pendiente',
+      products: selectedProducts, notes,
+      log: [], isNew: true,
+      createdAt: new Date().toISOString()
+    };
 
-  // Send email notification via EmailJS
-  emailjs.send('service_fjye1ov', 'template_pxeo0uw', {
-    order_id:    newOrder.id,
-    client_name: name,
-    client_phone: phone,
-    delivery_date: newOrder.date,
-    delivery_time: time,
-    location:    prov + ', ' + canton + ' — ' + dir,
-    products:    productLines,
-    total:       '₡' + orderTotal.toLocaleString('es-CR'),
-    payment:     payment,
-    notes:       notes || 'Ninguna',
-    to_email:    'amantecr25@gmail.com'
-  }).catch(err => console.warn('EmailJS error:', err));
+    db.ref('orders/' + newOrder.id.replace('#','')).set(newOrder, saveErr => {
+      if (saveErr) { alert('Error al guardar el pedido. Intentá de nuevo.'); return; }
 
-  document.getElementById('order-form').style.display='none';
-  document.getElementById('f-success').style.display='block';
+      // Send email notification via EmailJS
+      const productLines = selectedProducts.map(p => p.name + ' x' + p.qty + ' — ₡' + (p.qty*p.price).toLocaleString('es-CR')).join('\n');
+      const orderTotal = selectedProducts.reduce((s,p)=>s+p.qty*p.price, 0);
+      emailjs.send('service_fjye1ov', 'template_pxeo0uw', {
+        order_id:     newOrder.id,
+        client_name:  name,
+        client_phone: phone,
+        delivery_date: newOrder.date,
+        delivery_time: time,
+        location:     prov + ', ' + canton + ' — ' + dir,
+        products:     productLines,
+        total:        '₡' + orderTotal.toLocaleString('es-CR'),
+        payment:      payment,
+        notes:        notes || 'Ninguna',
+        to_email:     'amantecr25@gmail.com'
+      }).catch(err => console.warn('EmailJS error:', err));
+
+      document.getElementById('order-form').style.display='none';
+      document.getElementById('f-success').style.display='block';
+    });
+  });
 }
 
 function resetForm() {
