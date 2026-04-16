@@ -18,31 +18,31 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { background: #fffaf3; color: #1e1e1e; font-family: 'new-frank','Helvetica Neue',sans-serif; min-height: 100vh; }
-
+ 
     /* NAV */
     .nav { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid rgba(30,30,30,0.15); background: #fffaf3; display: flex; align-items: center; justify-content: space-between; position: sticky; top:0; z-index:10; }
     .nav svg { height: 15px; width: auto; display: block; }
     .nav-date { font-size: 12px; color: rgba(30,30,30,0.45); }
-
+ 
     /* LAYOUT */
     .wrap { max-width: 760px; margin: 0 auto; padding: 1.75rem 1.25rem 4rem; }
-
+ 
     /* LABELS */
     .sec-label { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,30,30,0.45); margin-bottom: 1rem; }
-
+ 
     /* METRICS */
     .metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; margin-bottom: 1.75rem; }
     .metric { background: #f0ece5; border-radius: 4px; padding: 1rem; border: 0.5px solid rgba(30,30,30,0.1); }
     .metric-label { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,30,30,0.45); margin-bottom: 6px; }
     .metric-value { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 26px; font-weight: 800; color: #1e1e1e; }
     .metric-sub { font-size: 11px; color: rgba(30,30,30,0.45); margin-top: 3px; }
-
+ 
     /* FILTERS */
     .filters { display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
     .filter-btn { font-family: 'new-frank',sans-serif; font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(30,30,30,0.25); background: #fffaf3; color: rgba(30,30,30,0.6); cursor: pointer; transition: all 0.12s; }
     .filter-btn.active { background: #1e1e1e; color: #fffaf3; border-color: #1e1e1e; }
     .filter-btn:hover:not(.active) { background: #e8e4dd; color: #1e1e1e; }
-
+ 
     /* ORDER CARDS */
     .orders { display: flex; flex-direction: column; gap: 10px; }
     .order-card { background: #fffaf3; border: 0.5px solid rgba(30,30,30,0.18); border-radius: 4px; transition: border-color 0.15s; }
@@ -58,7 +58,7 @@
     .order-amount { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 16px; font-weight: 800; color: #1e1e1e; }
     .chevron { font-size: 11px; color: rgba(30,30,30,0.4); transition: transform 0.2s; display: inline-block; }
     .chevron.open { transform: rotate(180deg); }
-
+ 
     /* BADGES */
     .badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
     .badge-pendiente { background: #f5e8d0; color: #5a3500; border: 0.5px solid rgba(90,53,0,0.2); }
@@ -66,7 +66,7 @@
     .badge-entregado { background: #e8eedf; color: #2a4010; border: 0.5px solid rgba(42,64,16,0.2); }
     .badge-cancelado { background: #ede8e1; color: rgba(30,30,30,0.4); border: 0.5px solid rgba(30,30,30,0.12); text-decoration: line-through; }
     .new-badge { font-family: 'field-gothic-no-36',sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 0.05em; background: #1e1e1e; color: #fffaf3; padding: 2px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
-
+ 
     /* ORDER BODY */
     .order-body { display: none; border-top: 0.5px solid rgba(30,30,30,0.12); }
     .order-body.open { display: block; }
@@ -76,7 +76,7 @@
     .inner-tab:hover:not(.active) { color: rgba(30,30,30,0.7); }
     .tab-panel { display: none; padding: 1rem 1.25rem; }
     .tab-panel.active { display: block; }
-
+ 
     /* DETAIL */
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin-bottom: 1rem; }
     .detail-key { font-size: 11px; color: rgba(30,30,30,0.42); margin-bottom: 2px; letter-spacing: 0.01em; }
@@ -84,7 +84,7 @@
     .prod-row { display: flex; justify-content: space-between; font-size: 13px; color: rgba(30,30,30,0.6); padding: 5px 0; border-bottom: 0.5px solid rgba(30,30,30,0.08); }
     .prod-row:last-child { border-bottom: none; }
     .order-total-row { display: flex; justify-content: space-between; font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 16px; font-weight: 800; color: #1e1e1e; padding: 10px 0; border-top: 0.5px solid rgba(30,30,30,0.12); margin-top: 4px; margin-bottom: 1rem; }
-
+ 
     /* ACTIONS */
     .action-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 1rem; border-top: 0.5px solid rgba(30,30,30,0.1); }
     .action-btn { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 8px 16px; border-radius: 4px; border: 1px solid rgba(30,30,30,0.25); background: #fffaf3; color: #1e1e1e; cursor: pointer; transition: all 0.15s; }
@@ -95,7 +95,7 @@
     .action-btn.danger:hover { color: #1e1e1e; border-color: rgba(30,30,30,0.35); background: #f5e8d0; }
     .action-btn.paid-done { background: #e8eedf; color: #2a4010; border-color: rgba(42,64,16,0.25); }
     .action-btn.paid-done:hover { opacity: 0.8; }
-
+ 
     /* ACTIVITY */
     .activity-list { display: flex; flex-direction: column; gap: 8px; }
     .activity-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 4px; background: #f0ece5; gap: 12px; border: 0.5px solid rgba(30,30,30,0.08); }
@@ -106,10 +106,10 @@
     .revert-btn { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px; border: 1px solid rgba(30,30,30,0.2); background: #fffaf3; color: rgba(30,30,30,0.5); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.12s; }
     .revert-btn:hover { color: #1e1e1e; border-color: rgba(30,30,30,0.4); background: #f5e8d0; }
     .activity-empty { font-size: 13px; color: rgba(30,30,30,0.38); text-align: center; padding: 1.5rem 0; font-style: italic; }
-
+ 
     .db-empty { text-align: center; padding: 3rem 1rem; color: rgba(30,30,30,0.38); font-size: 14px; }
     .refresh-hint { font-size: 12px; color: rgba(30,30,30,0.35); text-align: right; margin-bottom: 0.75rem; }
-
+ 
     .orders-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
     .orders-header .sec-label { margin-bottom: 0; }
     .add-order-btn { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 16px; border-radius: 4px; border: 1px solid rgba(30,30,30,0.25); background: #fffaf3; color: #1e1e1e; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
@@ -142,7 +142,7 @@
     .m-action-btn.primary { background: #1e1e1e; color: #fffaf3; border-color: #1e1e1e; }
     .m-action-btn.primary:hover { opacity: 0.82; }
     .wa-tag { display: inline-block; font-family: "field-gothic-no-36",sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; background: #e8eedf; color: #2a4010; padding: 2px 8px; border-radius: 20px; border: 0.5px solid rgba(42,64,16,0.2); margin-left: 6px; vertical-align: middle; }
-
+ 
     @media(max-width:520px) {
       .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .detail-grid { grid-template-columns: 1fr; }
@@ -150,14 +150,14 @@
   </style>
 </head>
 <body>
-
+ 
 <nav class="nav">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.45 13.56">
     <path fill="#1e1e1e" d="M66.99,10.91c-1.11,0-1.82-.46-1.82-.82,0-.99,1.17-1.4,1.17-2.81,0-.23-.27-.28-.55,0-1.33,1.33-2.11,3.62-3.23,3.62-.61,0-1.03-.36-1.03-.98,0-.97,3.26-2.79,3.64-3.22.5-.55.21-.7-.12-.7-.66,0-1.64,1.28-2.27,1.28s-1.25-.93-1.25-1.82c0-1.39.35-1.82.73-1.82.41,0,2.03,1.39,2.76,1.39.27,0,.5-.25.14-.61s-3.64-2-3.64-3.25c0-.57.27-1.17.83-1.17,1.12,0,2.1,2.8,3.26,3.64.8.57.8.23.72,0s-1.18-1.91-1.18-2.52.51-1.11,1.82-1.11,1.82.48,1.82.98-1.2,1.54-1.2,2.24c0,.2.04.42.18.42,1.04,0,2.58-3.64,3.66-3.64.4,0,1,.25,1,.81,0,.82-3.64,2.1-3.64,3.57,0,1.12,1.45-.74,2.4-.74.76,0,1.24.42,1.24,1.82,0,.62-.12,1.82-.89,1.82-.65,0-2.75-2.03-2.75-1.3,0,1.53,3.64,2.9,3.64,3.85,0,.21-.03,1.08-.82,1.08-1.09,0-2.34-3.64-3.51-3.64-.59,0,.69,1.6.69,2.37s-.71,1.26-1.82,1.26ZM2.25,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM27.54,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM44.08,6.45v6.11q0,.66-1.18.66t-1.19-.66c0-.46-.02-4.53-.02-5.78,0-1.49-.77-2.43-2-2.43s-2.65.94-2.65,3.52v4.69q0,.66-2.38.66h-1.73c-.99,0-.55-1.99-.95-1.99-.52,0-.56,2.33-3.76,2.33-2.4,0-2.59-2.32-2.59-1q0,.66-1.24.66-1.12,0-1.12-.66v-5.26c0-1.38-.49-2.95-1.99-2.95-1.64,0-2.46,1.6-2.46,2.92,0,1.13-.02,4.6-.02,5.27s0,.67-1.19.67-1.19,0-1.19-.66,0-3.3,0-5.29-.81-2.92-2.02-2.92c-1.75,0-2.63,1.6-2.63,2.92,0,1.98-.03,4.63-.03,5.29s0,.66-2.42.66h-1.69c-.99,0-.55-1.99-.98-1.99s-.58,2.33-3.74,2.33c-2.01,0-2.93-1.2-2.93-2.63s.75-2.48,2.95-3.14c2.2-.66,3.42-1.02,3.42-2.21s-1.01-1.46-1.87-1.46c-1.9,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.7-1.34,4.16-1.34,1.64,0,3.65.58,3.65,3.61,0,4.67-.03,6.03.4,6.03.32,0,.28-.73.28-1.31,0-1.32,0-6.91,0-7.27q0-.69,1.18-.69,1.16,0,1.16.69c0,2,.05,1.07.87.12.54-.62,1.38-1.18,2.84-1.18,2.9,0,2.78,2.27,3.17,2.27s.75-2.27,3.72-2.27c1.89,0,3.31,1.1,3.31,4.2,0,1.58.01,2.8.23,2.8.16,0,.39-.83,2-1.35,1.61-.52,3.79-.84,3.79-2.32,0-1.21-1.2-1.46-1.87-1.46-1.86,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.67-1.34,4.16-1.34,3.34,0,3.65,2.38,3.65,3.61,0,4.72-.04,6.04.38,6.04.31,0,.3-.5.3-1.32,0,.18,0-6.64,0-7.27q0-.66,1.23-.66,1.11,0,1.11.66c0,3.3-.03-1.06,3.73-1.06,1.34,0,2,.51,2.38.92.38.41,2.05-.44,2.91-2.51q.28-.66.85-.66.64,0,.64.66c0,.66,0,1.04,0,1.32q0,.63,2.68.63.33,0,.33,1.58c0,.43,1.19-1.94,4.24-1.94s4.65,1.71,4.65,4.96c0,.86,0,.49,0,.71q0,.62-1.61.62c-5.81,0-5.78,0-5.78.51,0,1.78,1.79,2.69,3.5,2.69,2.4,0,3.63-1.84,3.63-.52v1.09c0,.64-2.54,1.23-3.99,1.23-4.15,0-5.52-2.56-5.52-5.73,0-1.79.8-3.29.29-3.29h-1.95q-.47,0-.47,3.95c0,2.75.4,3.27,1.48,3.27s1.48-.52,1.48.14v.85c0,.82-1.51.81-2.06.81-2.53,0-3.29-1.26-3.29-4.92q0-4.1-.26-4.09c-.26,0-.35,0-.78,0-.29,0-.01.2-.01,1.91ZM54.72,4.01c-2.6,0-2.74,2.26-2.74,2.58s0,.33,2.64.33,2.64,0,2.64-.31.06-2.6-2.55-2.6Z"/>
   </svg>
   <div class="nav-date" id="nav-date"></div>
 </nav>
-
+ 
 <div class="wrap">
   <div class="metrics">
     <div class="metric"><div class="metric-label">Pedidos hoy</div><div class="metric-value" id="m-today">0</div><div class="metric-sub">del día</div></div>
@@ -165,7 +165,7 @@
     <div class="metric"><div class="metric-label">Ingresos hoy</div><div class="metric-value" id="m-rev">₡0</div><div class="metric-sub">confirmados y pagados</div></div>
     <div class="metric"><div class="metric-label">Entregas hoy</div><div class="metric-value" id="m-del">0</div><div class="metric-sub">programadas</div></div>
   </div>
-
+ 
   <!-- MANUAL ORDER MODAL -->
   <div class="modal-overlay" id="manual-modal">
     <div class="modal">
@@ -241,7 +241,7 @@
       </div>
     </div>
   </div>
-
+ 
   <div class="orders-header">
     <div class="sec-label">Pedidos</div>
     <button class="add-order-btn" onclick="openModal()">+ Pedido manual</button>
@@ -256,7 +256,7 @@
   </div>
   <div class="orders" id="db-orders"></div>
 </div>
-
+ 
 <script>
 const TODAY = new Date();
 const FMTLONG = d => d.toLocaleDateString('es-CR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
@@ -264,30 +264,30 @@ const FMTS = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',ye
 const FMTT = () => new Date().toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});
 const d0 = FMTS(TODAY);
 document.getElementById('nav-date').textContent = FMTLONG(TODAY);
-
+ 
 let orders = [];
 let activeFilter = 'todos';
 let expandedId = null;
 let activeTabs = {};
 const db = firebase.database();
-
+ 
 function loadOrders() {
   // no-op: data comes from Firebase listener
 }
-
+ 
 function saveOrders() {
   // no-op: each action saves directly to Firebase
 }
-
+ 
 function saveOrderToFirebase(order) {
   db.ref('orders/' + order.id.replace('#','')).set(order);
 }
-
+ 
 function oTotal(o) { return o.products.reduce((s,p)=>s+p.qty*p.price,0); }
 function ini(n) { return n.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase(); }
 function bClass(s) { return {pendiente:'badge-pendiente',confirmado:'badge-confirmado',entregado:'badge-entregado',cancelado:'badge-cancelado'}[s]||''; }
 function bLabel(s) { return {pendiente:'Pendiente',confirmado:'Confirmado',entregado:'Entregado',cancelado:'Cancelado'}[s]||s; }
-
+ 
 function updateMetrics() {
   const tod = orders.filter(o=>o.date===d0);
   document.getElementById('m-today').textContent = tod.length;
@@ -296,7 +296,7 @@ function updateMetrics() {
   document.getElementById('m-rev').textContent = '₡'+rev.toLocaleString('es-CR');
   document.getElementById('m-del').textContent = orders.filter(o=>o.date===d0&&(o.status==='confirmado'||o.status==='pendiente')).length;
 }
-
+ 
 function changeStatus(id, newStatus, e) {
   e.stopPropagation();
   const label = {confirmado:'Pedido confirmado',entregado:'Marcado como entregado',cancelado:'Pedido cancelado'}[newStatus];
@@ -305,7 +305,7 @@ function changeStatus(id, newStatus, e) {
   if (updated) saveOrderToFirebase(updated);
   render();
 }
-
+ 
 function togglePaid(id, e) {
   e.stopPropagation();
   orders = orders.map(o => {
@@ -320,7 +320,7 @@ function togglePaid(id, e) {
   if (updated) saveOrderToFirebase(updated);
   render();
 }
-
+ 
 function revertLog(id, idx, e) {
   e.stopPropagation();
   orders = orders.map(o => {
@@ -337,41 +337,41 @@ function revertLog(id, idx, e) {
   if (updated) saveOrderToFirebase(updated);
   render();
 }
-
+ 
 function setFilter(f, btn) {
   activeFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
-
+ 
 function switchTab(id, tab, e) { e.stopPropagation(); activeTabs[id]=tab; render(); }
-
+ 
 function toggleExpand(id) {
   expandedId = expandedId===id ? null : id;
   if(!activeTabs[id]) activeTabs[id]='info';
   orders = orders.map(o=>o.id===id?{...o,isNew:false}:o);
   saveOrders(); render();
 }
-
+ 
 function render() {
   updateMetrics();
   const container = document.getElementById('db-orders');
   const filtered = activeFilter==='todos' ? orders : orders.filter(o=>o.status===activeFilter);
   if(!filtered.length) { container.innerHTML='<div class="db-empty">No hay pedidos en esta categoría.</div>'; return; }
-
+ 
   container.innerHTML = filtered.map(o => {
     const total = oTotal(o), isExp = expandedId===o.id, tab = activeTabs[o.id]||'info';
     const prodRows = o.products.map(p=>`<div class="prod-row"><span>${p.name} × ${p.qty}</span><span>₡${(p.qty*p.price).toLocaleString('es-CR')}</span></div>`).join('');
-
+ 
     let statusActions = '';
     if(o.status==='pendiente') statusActions=`<button class="action-btn primary" onclick="changeStatus('${o.id}','confirmado',event)">Confirmar</button><button class="action-btn danger" onclick="changeStatus('${o.id}','cancelado',event)">Cancelar</button>`;
     else if(o.status==='confirmado') statusActions=`<button class="action-btn primary" onclick="changeStatus('${o.id}','entregado',event)">Marcar entregado</button>`;
-
+ 
     const paidBtn = o.paid
       ? `<button class="action-btn paid-done" onclick="togglePaid('${o.id}',event)">✓ Pago recibido</button>`
       : `<button class="action-btn" onclick="togglePaid('${o.id}',event)">Marcar pagado</button>`;
-
+ 
     const logItems = o.log.length
       ? o.log.map((entry,i)=>`
           <div class="activity-item">
@@ -382,10 +382,10 @@ function render() {
             <button class="revert-btn" onclick="revertLog('${o.id}',${i},event)">Revertir</button>
           </div>`).join('')
       : `<div class="activity-empty">Sin actividad registrada aún.</div>`;
-
+ 
     const newDot = o.isNew ? '<span class="new-badge">Nuevo</span>' : '';
     const manualTag = o.isManual ? '<span class="wa-tag">WhatsApp</span>' : '';
-
+ 
     return `
     <div class="order-card ${isExp?'expanded':''}">
       <div class="order-header" onclick="toggleExpand('${o.id}')">
@@ -426,18 +426,18 @@ function render() {
     </div>`;
   }).join('');
 }
-
+ 
 // Manual order modal
 function openModal() {
   document.getElementById('m-date').min = new Date().toISOString().split('T')[0];
   document.getElementById('manual-modal').classList.add('open');
 }
-
+ 
 function closeModal() {
   document.getElementById('manual-modal').classList.remove('open');
   resetModal();
 }
-
+ 
 function resetModal() {
   ['m-name','m-phone','m-date','m-canton','m-dir','m-notes'].forEach(id => {
     const el = document.getElementById(id);
@@ -455,7 +455,7 @@ function resetModal() {
     <button class="m-remove-btn" onclick="removeProductLine(this)">&#215;</button>
   </div>`;
 }
-
+ 
 function addProductLine() {
   const lines = document.getElementById('m-product-lines');
   const row = document.createElement('div');
@@ -466,12 +466,12 @@ function addProductLine() {
     <button class="m-remove-btn" onclick="removeProductLine(this)">&#215;</button>`;
   lines.appendChild(row);
 }
-
+ 
 function removeProductLine(btn) {
   const lines = document.getElementById('m-product-lines');
   if (lines.children.length > 1) btn.closest('.m-product-row').remove();
 }
-
+ 
 function saveManualOrder() {
   const name = document.getElementById('m-name').value.trim();
   const phone = document.getElementById('m-phone').value.trim();
@@ -481,7 +481,7 @@ function saveManualOrder() {
   const dir = document.getElementById('m-dir').value.trim();
   const payment = document.getElementById('m-payment').value;
   const notes = document.getElementById('m-notes').value.trim();
-
+ 
   const rows = document.querySelectorAll('#m-product-lines .m-product-row');
   const products = [];
   let valid = true;
@@ -492,15 +492,15 @@ function saveManualOrder() {
     if (n && q > 0 && p > 0) products.push({ name: n, qty: q, price: p });
     else if (n || q > 1 || p > 0) valid = false;
   });
-
+ 
   if (!name || !phone || !date || !time || !canton || !dir || !payment || products.length === 0 || !valid) {
     alert('Por favor completá todos los campos y agregá al menos un producto con nombre, cantidad y precio.');
     return;
   }
-
+ 
   const counter = parseInt(localStorage.getItem('amante_counter') || '41') + 1;
   localStorage.setItem('amante_counter', counter);
-
+ 
   const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
   const newOrder = {
     id: '#0' + String(counter).padStart(3,'0'),
@@ -515,21 +515,27 @@ function saveManualOrder() {
     isNew: true,
     isManual: true
   };
-
+ 
   saveOrderToFirebase(newOrder);
   closeModal();
 }
-
+ 
 // Close modal on overlay click
 document.getElementById('manual-modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
-
+ 
 // Listen to Firebase in real time — updates dashboard instantly on any device
 db.ref('orders').on('value', snapshot => {
   const data = snapshot.val();
   if (data) {
-    orders = Object.values(data).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    orders = Object.values(data)
+      .filter(o => o && o.id && o.name && o.products)
+      .sort((a,b) => {
+        const da = a.createdAt ? new Date(a.createdAt) : 0;
+        const db2 = b.createdAt ? new Date(b.createdAt) : 0;
+        return db2 - da;
+      });
   } else {
     orders = [];
   }
