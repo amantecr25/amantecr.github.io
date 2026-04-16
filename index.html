@@ -547,7 +547,6 @@ function submitOrder() {
   const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
 
   // Get current counter from Firebase then save order
-  const db = firebase.database();
   const counterRef = db.ref('meta/orderCounter');
   counterRef.transaction(current => (current || 41) + 1, (error, committed, snapshot) => {
     if (error || !committed) { alert('Error al enviar el pedido. Intentá de nuevo.'); return; }
