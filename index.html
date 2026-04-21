@@ -83,9 +83,9 @@
     .product-item { border: 0.5px solid rgba(30,30,30,0.15); border-radius: 4px; margin-bottom: 8px; background: #fffaf3; overflow: hidden; }
     .product-item:hover { border-color: rgba(30,30,30,0.3); }
     .product-item-top { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
-    .product-img { width: 52px; height: 52px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+    .product-img { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
     .product-img-placeholder {
-      width: 52px; height: 52px; border-radius: 4px; flex-shrink: 0;
+      width: 64px; height: 64px; border-radius: 4px; flex-shrink: 0;
       background: #e8e4dd; border: 0.5px solid rgba(30,30,30,0.12);
       display: flex; align-items: center; justify-content: center;
       font-family: 'field-gothic-no-36',sans-serif; font-size: 22px; font-weight: 800;
@@ -131,6 +131,14 @@
       cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; transition: opacity 0.15s;
     }
     .submit-btn:hover { opacity: 0.82; }
+    /* LIGHTBOX */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(30,30,30,0.92); z-index: 200; align-items: center; justify-content: center; padding: 1.5rem; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 6px; object-fit: contain; }
+    .lightbox-close { position: fixed; top: 1.25rem; right: 1.25rem; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,250,243,0.15); border: 0.5px solid rgba(255,250,243,0.3); color: #fffaf3; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s; }
+    .lightbox-close:hover { background: rgba(255,250,243,0.25); }
+    .product-img { cursor: zoom-in; }
+
     /* PICKUP TOGGLE */
     .delivery-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
     .delivery-btn { border: 1px solid rgba(30,30,30,0.25); border-radius: 4px; padding: 12px 14px; background: #fffaf3; cursor: pointer; text-align: left; transition: all 0.15s; }
@@ -292,6 +300,12 @@
     </div>
   </div>
 
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
   <!-- SUCCESS -->
   <div class="success-screen" id="f-success">
     <div class="success-mark">*</div>
@@ -317,22 +331,22 @@ const CATALOG = [
   {
     category: 'Focaccias',
     items: [
-      { id:'f1', name:'Clásica', desc:'', price:3000, image:null },
-      { id:'f2', name:'Aceitunas, Cebolla y Tomate', desc:'', price:3500, image:null },
-      { id:'f3', name:'Cebolla Caramelizada', desc:'', price:3500, image:null },
-      { id:'f4', name:'Mora', desc:'', price:3500, image:null },
+      { id:'f1', name:'Clásica', desc:'', price:3000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/93c9734bbaffdc7f9e65954e0e7f0d868402e988/SQ_Clasica.jpg' },
+      { id:'f2', name:'Aceitunas, Cebolla y Tomate', desc:'', price:3500, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/93c9734bbaffdc7f9e65954e0e7f0d868402e988/SQ_Aceitunas.jpg' },
+      { id:'f3', name:'Cebolla Caramelizada', desc:'', price:3500, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/93c9734bbaffdc7f9e65954e0e7f0d868402e988/SQ_Cebolla.jpg' },
+      { id:'f4', name:'Mora', desc:'', price:3500, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/93c9734bbaffdc7f9e65954e0e7f0d868402e988/SQ_Mora.jpg' },
     ]
   },
   {
     category: 'Galletas',
     items: [
-      { id:'g1', name:'Galletas de Chocolate Chips', desc:'10 unidades', price:5000, image:null },
+      { id:'g1', name:'Galletas de Chocolate Chips', desc:'10 unidades', price:5000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/93c9734bbaffdc7f9e65954e0e7f0d868402e988/Galletas.jpeg' },
     ]
   },
   {
     category: 'Merch',
     items: [
-      { id:'m1', name:'Focaccia T V01', desc:'Camiseta blanca', price:10000, image:null,
+      { id:'m1', name:'Focaccia-T v.01', desc:'Camiseta blanca', price:10000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/93c9734bbaffdc7f9e65954e0e7f0d868402e988/Camisas.jpg',
         sizes: [
           { label:'S', stock:3 },
           { label:'M', stock:1 },
@@ -391,7 +405,7 @@ function renderProducts() {
 
       // Image slot
       const imgSlot = item.image
-        ? `<img src="${item.image}" class="product-img" alt="${item.name}">`
+        ? `<img src="${item.image}" class="product-img" alt="${item.name}" onclick="openLightbox('${item.image}')">`
         : `<div class="product-img-placeholder"><span>*</span></div>`;
 
       if (item.sizes) {
@@ -611,6 +625,17 @@ function resetForm() {
   document.getElementById('order-form').style.display='block';
   renderProducts();
 }
+
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
 document.getElementById('f-date').min = new Date().toISOString().split('T')[0];
 
