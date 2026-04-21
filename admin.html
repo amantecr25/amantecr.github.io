@@ -124,6 +124,9 @@
     .refresh-hint { font-size: 12px; color: rgba(30,30,30,0.35); text-align: right; margin-bottom: 0.75rem; }
 
     .orders-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .sort-select { font-family: "new-frank",sans-serif; font-size: 12px; color: rgba(30,30,30,0.6); background: #fffaf3; border: 0.5px solid rgba(30,30,30,0.25); border-radius: 4px; padding: 5px 28px 5px 10px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%231e1e1e' d='M1 1l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
+    .sort-select:hover { border-color: rgba(30,30,30,0.4); }
+    .orders-controls { display: flex; align-items: center; gap: 8px; }
     .orders-header .sec-label { margin-bottom: 0; }
     .add-order-btn { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 16px; border-radius: 4px; border: 1px solid rgba(30,30,30,0.25); background: #fffaf3; color: #1e1e1e; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
     .add-order-btn:hover { background: #1e1e1e; color: #fffaf3; border-color: #1e1e1e; }
@@ -264,7 +267,13 @@
   <div id="view-orders">
     <div class="orders-header">
       <div class="sec-label" style="margin-bottom:0;">Todos los pedidos</div>
-      <button class="add-order-btn" onclick="openModal()">+ Pedido manual</button>
+      <div class="orders-controls">
+        <select class="sort-select" id="sort-select" onchange="setSortAndRender()">
+          <option value="newest">Más reciente</option>
+          <option value="delivery">Fecha de entrega</option>
+        </select>
+        <button class="add-order-btn" onclick="openModal()">+ Pedido manual</button>
+      </div>
     </div>
     <div class="refresh-hint">Se actualiza automáticamente cada 30 segundos</div>
     <div class="filters">
@@ -454,6 +463,33 @@ function renderProduction() {
   container.innerHTML = html;
 }
 
+let currentSort = 'newest';
+
+function setSortAndRender() {
+  currentSort = document.getElementById('sort-select').value;
+  render();
+}
+
+function getSortedOrders(list) {
+  if (currentSort === 'delivery') {
+    return [...list].sort((a, b) => {
+      const parseDate = d => {
+        if (!d) return 0;
+        const parts = d.split('/');
+        if (parts.length === 3) return new Date(parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]));
+        return new Date(d);
+      };
+      return parseDate(a.date) - parseDate(b.date);
+    });
+  }
+  // newest first — by createdAt
+  return [...list].sort((a, b) => {
+    const da = a.createdAt ? new Date(a.createdAt) : 0;
+    const db2 = b.createdAt ? new Date(b.createdAt) : 0;
+    return db2 - da;
+  });
+}
+
 function setFilter(f, btn) {
   activeFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -473,7 +509,7 @@ function toggleExpand(id) {
 function render() {
   updateMetrics();
   const container = document.getElementById('db-orders');
-  const filtered = activeFilter==='todos' ? orders : orders.filter(o=>o.status===activeFilter);
+  const filtered = getSortedOrders(activeFilter==='todos' ? orders : orders.filter(o=>o.status===activeFilter));
   if(!filtered.length) { container.innerHTML='<div class="db-empty">No hay pedidos en esta categoría.</div>'; return; }
 
   container.innerHTML = filtered.map(o => {
