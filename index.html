@@ -583,6 +583,17 @@ function submitOrder() {
   if(!name||!phone||!date||!time||!addressValid||!payment||!selectedProducts.length){
     alert('Por favor completá todos los campos y seleccioná al menos un producto.');return;
   }
+
+  // Enforce 24hr minimum — Safari-safe validation on submit
+  const dateParts = date.split('-');
+  const selectedDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
+  const utcMs = new Date().getTime() + new Date().getTimezoneOffset() * 60000;
+  const crNow = new Date(utcMs + (-6 * 60 * 60000));
+  const minAllowed = new Date(crNow.getFullYear(), crNow.getMonth(), crNow.getDate() + 1);
+  if (selectedDate < minAllowed) {
+    alert('Necesitamos al menos 24 horas de anticipación para preparar tu pedido. Por favor seleccioná una fecha a partir de mañana.');
+    return;
+  }
   const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
 
   // Get current counter from Firebase then save order
