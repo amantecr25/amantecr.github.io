@@ -152,6 +152,16 @@
     .contact-btn:hover { background: #e8e4dd; border-color: rgba(30,30,30,0.4); }
     .contact-btn svg { flex-shrink: 0; }
 
+    .payment-info {
+      background: #f0ece5; border: 0.5px solid rgba(30,30,30,0.12);
+      border-radius: 4px; padding: 1.25rem 1.5rem;
+      margin: 1.5rem auto 1.75rem; max-width: 340px; text-align: left;
+    }
+    .payment-info-label { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,30,30,0.45); margin-bottom: 0.75rem; }
+    .payment-info-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(30,30,30,0.6); margin-bottom: 6px; }
+    .payment-info-row:last-child { margin-bottom: 0; }
+    .payment-info-val { font-weight: 500; color: #1e1e1e; font-size: 14px; }
+
     .ghost-btn {
       padding: 11px 24px; background: transparent; color: #1e1e1e;
       border: 1px solid rgba(30,30,30,0.3); border-radius: 4px;
@@ -310,7 +320,22 @@
   <div class="success-screen" id="f-success">
     <div class="success-mark">*</div>
     <h2>¡Pedido recibido!</h2>
-    <p>Gracias. Confirmamos el pedido por WhatsApp en breve.<br>Las instrucciones de pago las recibís en tu número.</p>
+    <p>Confirmamos el pedido por WhatsApp en breve.<br>Podés realizar el pago de una vez:</p>
+    <div class="payment-info">
+      <div class="payment-info-label">Información de pago</div>
+      <div class="payment-info-row">
+        <span>Sinpe Móvil</span>
+        <span class="payment-info-val">8704-2226</span>
+      </div>
+      <div class="payment-info-row">
+        <span>Transferencia</span>
+        <span class="payment-info-val">8704-2226</span>
+      </div>
+      <div class="payment-info-row" style="margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(30,30,30,0.1);">
+        <span>A nombre de</span>
+        <span class="payment-info-val">amante*</span>
+      </div>
+    </div>
     <button class="ghost-btn" onclick="resetForm()">Hacer otro pedido</button>
   </div>
 </div>
@@ -637,7 +662,9 @@ function closeLightbox() {
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
-document.getElementById('f-date').min = new Date().toISOString().split('T')[0];
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+document.getElementById('f-date').min = tomorrow.toISOString().split('T')[0];
 
 // Load merch stock from Firebase in real time
 const db = firebase.database();
