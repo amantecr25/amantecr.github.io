@@ -662,15 +662,21 @@ function closeLightbox() {
 }
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
-// Timezone-safe 24hr minimum — uses Costa Rica time (UTC-6)
-const now = new Date();
-const crOffset = -6 * 60; // UTC-6 in minutes
-const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-const crNow = new Date(utc + crOffset * 60000);
-const tomorrow = new Date(crNow);
-tomorrow.setDate(tomorrow.getDate() + 1);
-const minDate = tomorrow.toISOString().split('T')[0];
-document.getElementById('f-date').min = minDate;
+// Safari-safe 24hr minimum — manually builds YYYY-MM-DD string
+(function() {
+  const now = new Date();
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  const crMs = utcMs + (-6 * 60 * 60000);
+  const cr = new Date(crMs);
+  const y = cr.getFullYear();
+  const m = cr.getMonth() + 1;
+  const d = cr.getDate() + 1;
+  const dObj = new Date(y, m - 1, d);
+  const yy = dObj.getFullYear();
+  const mm = String(dObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(dObj.getDate()).padStart(2, '0');
+  document.getElementById('f-date').min = yy + '-' + mm + '-' + dd;
+})();
 
 // Load merch stock from Firebase in real time
 const db = firebase.database();
