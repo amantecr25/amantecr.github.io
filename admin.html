@@ -124,6 +124,14 @@
     .refresh-hint { font-size: 12px; color: rgba(30,30,30,0.35); text-align: right; margin-bottom: 0.75rem; }
 
     .orders-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .history-tab { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(30,30,30,0.25); background: #fffaf3; color: rgba(30,30,30,0.45); cursor: pointer; transition: all 0.12s; margin-left: 4px; }
+    .history-tab.active { background: #1e1e1e; color: #fffaf3; border-color: #1e1e1e; }
+    .history-tab:hover:not(.active) { background: #e8e4dd; color: #1e1e1e; }
+    .past-order-card { background: #fffaf3; border: 0.5px solid rgba(30,30,30,0.08); border-radius: 4px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; opacity: 0.65; }
+    .past-order-card:hover { opacity: 1; border-color: rgba(30,30,30,0.2); }
+    .past-order-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+    .past-orders-list { display: flex; flex-direction: column; gap: 8px; }
+
     .sort-select { font-family: "new-frank",sans-serif; font-size: 12px; color: rgba(30,30,30,0.6); background: #fffaf3; border: 0.5px solid rgba(30,30,30,0.25); border-radius: 4px; padding: 5px 28px 5px 10px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%231e1e1e' d='M1 1l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
     .sort-select:hover { border-color: rgba(30,30,30,0.4); }
     .orders-controls { display: flex; align-items: center; gap: 8px; }
@@ -282,6 +290,7 @@
       <button class="filter-btn" onclick="setFilter('confirmado',this)">Confirmados</button>
       <button class="filter-btn" onclick="setFilter('entregado',this)">Entregados</button>
       <button class="filter-btn" onclick="setFilter('cancelado',this)">Cancelados</button>
+      <button class="history-tab" id="history-tab-btn" onclick="setFilter('historial',this)">Historial</button>
     </div>
     <div class="orders" id="db-orders"></div>
   </div>
@@ -493,6 +502,7 @@ function getSortedOrders(list) {
 function setFilter(f, btn) {
   activeFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('history-tab-btn').classList.remove('active');
   btn.classList.add('active');
   render();
 }
@@ -506,10 +516,44 @@ function toggleExpand(id) {
   saveOrders(); render();
 }
 
+function isCompleted(o) {
+  return o.status === 'entregado' && o.paid;
+}
+
 function render() {
   updateMetrics();
   const container = document.getElementById('db-orders');
-  const filtered = getSortedOrders(activeFilter==='todos' ? orders : orders.filter(o=>o.status===activeFilter));
+
+  if (activeFilter === 'historial') {
+    const past = getSortedOrders(orders.filter(o => isCompleted(o)));
+    if (!past.length) {
+      container.innerHTML = '<div class="db-empty">No hay pedidos completados aún.</div>';
+      return;
+    }
+    container.innerHTML = '<div class="past-orders-list">' + past.map(o => {
+      const total = oTotal(o);
+      const prodSummary = normalizeProducts(o.products).map(p => p.name + ' × ' + p.qty).join(', ');
+      return `<div class="past-order-card">
+        <div class="past-order-left">
+          <div class="avatar">${ini(o.name)}</div>
+          <div>
+            <div class="order-name">${o.name}</div>
+            <div class="order-meta">${o.id} · ${o.canton} · ${o.date}</div>
+            <div class="order-meta" style="margin-top:2px;">${prodSummary}</div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="order-amount">₡${total.toLocaleString('es-CR')}</div>
+          <div class="order-meta" style="margin-top:3px;">${o.payment}</div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+    return;
+  }
+
+  // Active orders — exclude completed ones from main views
+  const activeOrders = orders.filter(o => !isCompleted(o));
+  const filtered = getSortedOrders(activeFilter==='todos' ? activeOrders : activeOrders.filter(o=>o.status===activeFilter));
   if(!filtered.length) { container.innerHTML='<div class="db-empty">No hay pedidos en esta categoría.</div>'; return; }
 
   container.innerHTML = filtered.map(o => {
