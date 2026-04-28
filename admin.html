@@ -171,6 +171,70 @@
       .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
       .detail-grid { grid-template-columns: 1fr; }
     }
+
+    /* CALENDAR */
+    .cal-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .cal-range { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: #1e1e1e; margin-right: auto; }
+    .cal-nav-btn { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: 1px solid rgba(30,30,30,0.25); background: #fffaf3; color: #1e1e1e; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+    .cal-nav-btn:hover { background: #e8e4dd; border-color: rgba(30,30,30,0.4); }
+
+    /* Week grid */
+    .cal-grid-week { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 6px; margin-bottom: 2rem; }
+    .cal-day { background: #f0ece5; border-radius: 4px; border: 0.5px solid rgba(30,30,30,0.1); min-height: 90px; padding: 8px 8px 6px; }
+    .cal-day.today { border: 1.5px solid #1e1e1e; }
+    .cal-day-label { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(30,30,30,0.4); }
+    .cal-day-num { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 14px; font-weight: 800; color: #1e1e1e; margin-bottom: 5px; display: block; }
+
+    /* Week view pills */
+    .cal-pill { display: flex; align-items: baseline; gap: 4px; border-radius: 3px; padding: 4px 7px; margin-bottom: 4px; cursor: pointer; font-size: 11px; line-height: 1.35; transition: opacity 0.12s; overflow: hidden; }
+    .cal-pill:hover { opacity: 0.78; }
+    .cal-pill-name { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0; }
+    .cal-pill-sep { opacity: 0.5; flex-shrink: 0; }
+    .cal-pill-products { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0.8; }
+    .cal-pill-qty { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-weight: 800; font-size: 11px; white-space: nowrap; flex-shrink: 0; opacity: 0.85; }
+    .cal-pill.pendiente  { background: #f5e8d0; color: #5a3500; }
+    .cal-pill.confirmado { background: #1a4a3a; color: #fffaf3; }
+    .cal-pill.entregado  { background: #e8eedf; color: #2a4010; }
+    .cal-pill.cancelado  { background: #ede8e1; color: rgba(30,30,30,0.4); opacity: 0.5; }
+    .cal-pill.cancelado .cal-pill-name { text-decoration: line-through; }
+
+    /* Month grid */
+    .cal-dow-row { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 4px; margin-bottom: 4px; }
+    .cal-dow-header { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(30,30,30,0.4); text-align: center; padding-bottom: 4px; }
+    .cal-grid-month { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 4px; margin-bottom: 2rem; }
+    .cal-month-day { background: #f0ece5; border-radius: 4px; border: 0.5px solid rgba(30,30,30,0.1); min-height: 68px; padding: 6px; }
+    .cal-month-day.today { border: 1.5px solid #1e1e1e; }
+    .cal-month-day.outside { opacity: 0.3; pointer-events: none; }
+    .cal-month-day-num { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 11px; font-weight: 800; color: rgba(30,30,30,0.5); margin-bottom: 4px; }
+    .cal-month-pill { border-radius: 3px; padding: 2px 6px; margin-bottom: 3px; font-size: 10px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity 0.12s; display: block; }
+    .cal-month-pill:hover { opacity: 0.75; }
+    .cal-month-pill.pendiente  { background: #f5e8d0; color: #5a3500; }
+    .cal-month-pill.confirmado { background: #1a4a3a; color: #fffaf3; }
+    .cal-month-pill.entregado  { background: #e8eedf; color: #2a4010; }
+    .cal-month-pill.cancelado  { background: #ede8e1; color: rgba(30,30,30,0.4); opacity: 0.5; text-decoration: line-through; }
+    .cal-more-btn { font-size: 10px; color: rgba(30,30,30,0.45); cursor: pointer; padding: 1px 0; background: none; border: none; text-align: left; display: block; transition: color 0.12s; }
+    .cal-more-btn:hover { color: #1e1e1e; }
+
+    /* Calendar detail modal */
+    .cal-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(30,30,30,0.45); z-index: 200; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+    .cal-modal-overlay.open { display: flex; }
+    .cal-modal { background: #fffaf3; border-radius: 6px; width: 100%; max-width: 460px; border: 0.5px solid rgba(30,30,30,0.2); margin: auto; }
+    .cal-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 0.5px solid rgba(30,30,30,0.12); }
+    .cal-modal-title { font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #1e1e1e; }
+    .cal-modal-close { width: 28px; height: 28px; border-radius: 50%; border: 0.5px solid rgba(30,30,30,0.2); background: transparent; cursor: pointer; font-size: 14px; color: rgba(30,30,30,0.5); display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+    .cal-modal-close:hover { background: #e8e4dd; color: #1e1e1e; }
+    .cal-modal-body { padding: 1.25rem 1.5rem; }
+    .cal-modal-detail-key { font-size: 11px; color: rgba(30,30,30,0.42); margin-bottom: 2px; }
+    .cal-modal-detail-val { font-size: 13px; font-weight: 500; color: #1e1e1e; margin-bottom: 10px; }
+    .cal-modal-prod-row { display: flex; justify-content: space-between; font-size: 13px; color: rgba(30,30,30,0.6); padding: 5px 0; border-bottom: 0.5px solid rgba(30,30,30,0.08); }
+    .cal-modal-prod-row:last-child { border-bottom: none; }
+    .cal-modal-total { display: flex; justify-content: space-between; font-family: "field-gothic-no-36","field-gothic",sans-serif; font-size: 15px; font-weight: 800; color: #1e1e1e; padding: 8px 0 0; border-top: 0.5px solid rgba(30,30,30,0.12); margin-top: 4px; }
+    .cal-day-list-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 0.5px solid rgba(30,30,30,0.08); cursor: pointer; gap: 10px; }
+    .cal-day-list-row:last-child { border-bottom: none; }
+    .cal-day-list-row:hover .cal-day-list-name { text-decoration: underline; }
+    .cal-day-list-name { font-size: 13px; font-weight: 500; color: #1e1e1e; }
+    .cal-day-list-meta { font-size: 12px; color: rgba(30,30,30,0.45); margin-top: 1px; }
+    .cal-day-list-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -297,6 +361,22 @@
 
   <!-- PRODUCTION VIEW -->
   <div id="view-production" style="display:none;">
+
+    <!-- CALENDAR SECTION -->
+    <div id="cal-section">
+      <div class="view-toggle" style="margin-bottom:1rem;">
+        <button class="view-btn active" id="cal-btn-week" onclick="setCalMode('week')">Semana</button>
+        <button class="view-btn" id="cal-btn-month" onclick="setCalMode('month')">Mes</button>
+      </div>
+      <div class="cal-toolbar">
+        <button class="cal-nav-btn" onclick="calNav(-1)">&#8592; Anterior</button>
+        <button class="cal-nav-btn" onclick="calToday()">Hoy</button>
+        <button class="cal-nav-btn" onclick="calNav(1)">Siguiente &#8594;</button>
+        <span class="cal-range" id="cal-range"></span>
+      </div>
+      <div id="cal-grid"></div>
+    </div>
+
     <div class="prod-legend">
       <div class="prod-legend-item"><span class="prod-confirmed">12</span> Confirmados</div>
       <div class="prod-legend-item"><span class="prod-pending">3</span> Pendientes</div>
@@ -415,7 +495,7 @@ function setView(view) {
   document.getElementById('view-btn-production').classList.toggle('active', view==='production');
   document.getElementById('view-orders').style.display = view==='orders' ? 'block' : 'none';
   document.getElementById('view-production').style.display = view==='production' ? 'block' : 'none';
-  if (view==='production') renderProduction();
+  if (view==='production') { renderProduction(); renderCalendar(); }
 }
 
 function renderProduction() {
@@ -721,6 +801,239 @@ document.getElementById('manual-modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
+// ── Calendar ────────────────────────────────────────────────────────────────
+
+// TODO: o.name, o.notes, o.direccion etc. are interpolated into innerHTML and
+// onclick attrs without escaping throughout this file (see render() above).
+// Calendar code matches that existing pattern. Sanitize all order fields
+// before interpolation in a future cleanup pass.
+
+// Modal content is NOT reactive: if an order updates in Firebase while the
+// detail modal is open, the stale content remains until the modal is closed
+// and reopened.
+
+const CAL_MONTH_DAY_PILL_LIMIT = 3;
+
+let calMode = 'week';
+let calAnchor = getWeekMonday(new Date());
+
+function getWeekMonday(d) {
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+}
+
+function parseOrderDate(str) {
+  if (!str) return null;
+  const parts = str.split('/');
+  if (parts.length !== 3) return null;
+  return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+}
+
+function isSameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() &&
+         a.getMonth()    === b.getMonth()    &&
+         a.getDate()     === b.getDate();
+}
+
+function calFmtRange() {
+  const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio',
+                  'agosto','septiembre','octubre','noviembre','diciembre'];
+  if (calMode === 'week') {
+    const end = new Date(calAnchor);
+    end.setDate(end.getDate() + 6);
+    const d1 = calAnchor.getDate();
+    const d2 = end.getDate();
+    const m1 = MONTHS[calAnchor.getMonth()];
+    const m2 = MONTHS[end.getMonth()];
+    const y  = end.getFullYear();
+    return calAnchor.getMonth() === end.getMonth()
+      ? `${d1} – ${d2} ${m1} ${y}`
+      : `${d1} ${m1} – ${d2} ${m2} ${y}`;
+  }
+  return MONTHS[calAnchor.getMonth()] + ' ' + calAnchor.getFullYear();
+}
+
+function setCalMode(mode) {
+  calMode = mode;
+  document.getElementById('cal-btn-week').classList.toggle('active', mode === 'week');
+  document.getElementById('cal-btn-month').classList.toggle('active', mode === 'month');
+  calAnchor = mode === 'month'
+    ? new Date(calAnchor.getFullYear(), calAnchor.getMonth(), 1)
+    : getWeekMonday(calAnchor);
+  renderCalendar();
+}
+
+function calNav(dir) {
+  if (calMode === 'week') {
+    calAnchor = new Date(calAnchor.getFullYear(), calAnchor.getMonth(), calAnchor.getDate() + dir * 7);
+  } else {
+    calAnchor = new Date(calAnchor.getFullYear(), calAnchor.getMonth() + dir, 1);
+  }
+  renderCalendar();
+}
+
+function calToday() {
+  const now = new Date();
+  calAnchor = calMode === 'week'
+    ? getWeekMonday(now)
+    : new Date(now.getFullYear(), now.getMonth(), 1);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const el = document.getElementById('cal-range');
+  if (el) el.textContent = calFmtRange();
+  if (calMode === 'week') renderWeek();
+  else renderMonth();
+}
+
+function renderWeek() {
+  const DOW = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const today = new Date();
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+
+  const cells = Array.from({ length: 7 }, (_, i) => {
+    const day = new Date(calAnchor);
+    day.setDate(calAnchor.getDate() + i);
+    const isToday = isSameDay(day, today);
+    const dayOrders = orders.filter(o => {
+      const d = parseOrderDate(o.date);
+      return d && isSameDay(d, day);
+    });
+    const pills = dayOrders.map(o => {
+      const firstName = o.name ? o.name.split(' ')[0] : '—';
+      const prods = normalizeProducts(o.products);
+      const productNames = prods.map(p => p.name).join(', ');
+      const qtys = prods.map(p => '×' + p.qty).join(', ');
+      return `<div class="cal-pill ${o.status}" onclick="openCalEvent('${o.id}')">
+        <span class="cal-pill-name">${firstName}</span>
+        <span class="cal-pill-sep">·</span>
+        <span class="cal-pill-products">${productNames}</span>
+        <span class="cal-pill-sep">·</span>
+        <span class="cal-pill-qty">${qtys}</span>
+      </div>`;
+    }).join('');
+    return `<div class="cal-day${isToday ? ' today' : ''}">
+      <div class="cal-day-label">${DOW[i]}</div>
+      <span class="cal-day-num">${day.getDate()}</span>
+      ${pills}
+    </div>`;
+  }).join('');
+
+  grid.innerHTML = `<div class="cal-grid-week">${cells}</div>`;
+}
+
+function renderMonth() {
+  const DOW_LABELS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const today = new Date();
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+
+  const year  = calAnchor.getFullYear();
+  const month = calAnchor.getMonth();
+  const firstOfMonth = new Date(year, month, 1);
+  const startDay = getWeekMonday(firstOfMonth);
+
+  const cells = Array.from({ length: 42 }, (_, i) => {
+    const day = new Date(startDay);
+    day.setDate(startDay.getDate() + i);
+    const outside = day.getMonth() !== month;
+    const isToday = isSameDay(day, today);
+
+    // Outside-month days show only the number — no pills rendered
+    if (outside) {
+      return `<div class="cal-month-day outside">
+        <div class="cal-month-day-num">${day.getDate()}</div>
+      </div>`;
+    }
+
+    const dayOrders = orders.filter(o => {
+      const d = parseOrderDate(o.date);
+      return d && isSameDay(d, day);
+    });
+    const visible = dayOrders.slice(0, CAL_MONTH_DAY_PILL_LIMIT);
+    const extra   = dayOrders.length - CAL_MONTH_DAY_PILL_LIMIT;
+    const dateStr = day.toLocaleDateString('es-CR', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+    const pillsHtml = visible.map(o => {
+      const firstName = o.name ? o.name.split(' ')[0] : '—';
+      return `<span class="cal-month-pill ${o.status}" onclick="openCalEvent('${o.id}')">${firstName}</span>`;
+    }).join('');
+
+    const moreBtn = extra > 0
+      ? `<button class="cal-more-btn" onclick="openCalDay('${dateStr}')">+${extra} más</button>`
+      : '';
+
+    return `<div class="cal-month-day${isToday ? ' today' : ''}">
+      <div class="cal-month-day-num">${day.getDate()}</div>
+      ${pillsHtml}${moreBtn}
+    </div>`;
+  }).join('');
+
+  const dowRow = DOW_LABELS.map(d => `<div class="cal-dow-header">${d}</div>`).join('');
+  grid.innerHTML = `
+    <div class="cal-dow-row">${dowRow}</div>
+    <div class="cal-grid-month">${cells}</div>`;
+}
+
+function openCalEvent(orderId) {
+  const o = orders.find(x => x.id === orderId);
+  if (!o) return;
+  const prods = normalizeProducts(o.products);
+  const total = oTotal(o);
+  const prodRows = prods.map(p =>
+    `<div class="cal-modal-prod-row">
+      <span>${p.name} × ${p.qty}</span>
+      <span>₡${((p.qty||0)*(p.price||0)).toLocaleString('es-CR')}</span>
+    </div>`
+  ).join('');
+  document.getElementById('cal-modal-title').textContent = o.id + ' · ' + o.name;
+  document.getElementById('cal-modal-body').innerHTML = `
+    <div class="cal-modal-detail-key">Estado</div>
+    <div class="cal-modal-detail-val"><span class="badge ${bClass(o.status)}">${bLabel(o.status)}</span></div>
+    <div class="cal-modal-detail-key">Teléfono</div>
+    <div class="cal-modal-detail-val">${o.phone}</div>
+    <div class="cal-modal-detail-key">Fecha · Horario</div>
+    <div class="cal-modal-detail-val">${o.date} · ${o.time}</div>
+    <div class="cal-modal-detail-key">Dirección</div>
+    <div class="cal-modal-detail-val">${o.provincia}, ${o.canton} — ${o.direccion}</div>
+    <div class="cal-modal-detail-key">Pago</div>
+    <div class="cal-modal-detail-val">${o.payment}${o.paid ? ' · <strong>Pagado</strong>' : ''}</div>
+    ${o.notes ? `<div class="cal-modal-detail-key">Notas</div><div class="cal-modal-detail-val">${o.notes}</div>` : ''}
+    <div style="margin-top:8px;">${prodRows}</div>
+    <div class="cal-modal-total"><span>Total</span><span>₡${total.toLocaleString('es-CR')}</span></div>`;
+  document.getElementById('cal-modal-overlay').classList.add('open');
+}
+
+function openCalDay(dateStr) {
+  const dayOrders = orders.filter(o => o.date === dateStr);
+  document.getElementById('cal-modal-title').textContent = dateStr;
+  document.getElementById('cal-modal-body').innerHTML = dayOrders.map(o => {
+    const total = oTotal(o);
+    return `<div class="cal-day-list-row" onclick="openCalEvent('${o.id}')">
+      <div>
+        <div class="cal-day-list-name">${o.name}</div>
+        <div class="cal-day-list-meta">${o.id} · ${o.canton}</div>
+      </div>
+      <div class="cal-day-list-right">
+        <span class="badge ${bClass(o.status)}">${bLabel(o.status)}</span>
+        <span style="font-family:'field-gothic-no-36',sans-serif;font-size:14px;font-weight:800;">₡${total.toLocaleString('es-CR')}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cal-modal-overlay').classList.add('open');
+}
+
+function closeCalModal() {
+  document.getElementById('cal-modal-overlay').classList.remove('open');
+}
+
+function handleCalModalOverlayClick(e) {
+  if (e.target === document.getElementById('cal-modal-overlay')) closeCalModal();
+}
+
 // Listen to Firebase in real time — updates dashboard instantly on any device
 db.ref('orders').on('value', snapshot => {
   const data = snapshot.val();
@@ -741,8 +1054,19 @@ db.ref('orders').on('value', snapshot => {
     orders = [];
   }
   render();
-  if (currentView === 'production') renderProduction();
+  if (currentView === 'production') { renderProduction(); renderCalendar(); }
 });
 </script>
+
+<div class="cal-modal-overlay" id="cal-modal-overlay" onclick="handleCalModalOverlayClick(event)">
+  <div class="cal-modal">
+    <div class="cal-modal-header">
+      <span class="cal-modal-title" id="cal-modal-title"></span>
+      <button class="cal-modal-close" onclick="closeCalModal()">&#10005;</button>
+    </div>
+    <div class="cal-modal-body" id="cal-modal-body"></div>
+  </div>
+</div>
+
 </body>
 </html>
