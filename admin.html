@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://use.typekit.net/ugn8yww.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { background: #fffaf3; color: #1e1e1e; font-family: 'new-frank','Helvetica Neue',sans-serif; min-height: 100vh; }
@@ -235,15 +236,43 @@
     .cal-day-list-name { font-size: 13px; font-weight: 500; color: #1e1e1e; }
     .cal-day-list-meta { font-size: 12px; color: rgba(30,30,30,0.45); margin-top: 1px; }
     .cal-day-list-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    /* AUTH GATE */
+    .auth-gate { position: fixed; inset: 0; background: #fffaf3; display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1.5rem; }
+    .auth-gate.hidden { display: none; }
+    .auth-card { background: #fffaf3; border: 0.5px solid rgba(30,30,30,0.18); border-radius: 6px; padding: 2rem 1.75rem; max-width: 360px; width: 100%; text-align: center; }
+    .auth-title { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #1e1e1e; margin-bottom: 6px; }
+    .auth-sub { font-size: 13px; color: rgba(30,30,30,0.55); margin-bottom: 1.5rem; }
+    .auth-signin-btn { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 10px 18px; border-radius: 4px; border: 1px solid #1e1e1e; background: #1e1e1e; color: #fffaf3; cursor: pointer; width: 100%; transition: opacity 0.15s; }
+    .auth-signin-btn:hover { opacity: 0.85; }
+    .auth-signin-btn:disabled { opacity: 0.5; cursor: default; }
+    .auth-error { font-size: 12px; color: #b04040; margin-top: 1rem; min-height: 1em; }
+    .auth-loading { font-size: 12px; color: rgba(30,30,30,0.5); margin-top: 1rem; min-height: 1em; }
+    .auth-signout { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; border: 0.5px solid rgba(30,30,30,0.25); background: transparent; color: rgba(30,30,30,0.55); cursor: pointer; }
+    .auth-signout:hover { color: #1e1e1e; border-color: #1e1e1e; }
   </style>
 </head>
 <body>
+
+<!-- AUTH GATE — shown until user signs in with an authorized Google account -->
+<div class="auth-gate" id="auth-gate">
+  <div class="auth-card">
+    <div class="auth-title">amante admin</div>
+    <div class="auth-sub">Iniciá sesión para continuar</div>
+    <button class="auth-signin-btn" id="auth-signin-btn">Iniciar sesión con Google</button>
+    <div class="auth-error" id="auth-error"></div>
+    <div class="auth-loading" id="auth-loading">Verificando…</div>
+  </div>
+</div>
 
 <nav class="nav">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.45 13.56">
     <path fill="#1e1e1e" d="M66.99,10.91c-1.11,0-1.82-.46-1.82-.82,0-.99,1.17-1.4,1.17-2.81,0-.23-.27-.28-.55,0-1.33,1.33-2.11,3.62-3.23,3.62-.61,0-1.03-.36-1.03-.98,0-.97,3.26-2.79,3.64-3.22.5-.55.21-.7-.12-.7-.66,0-1.64,1.28-2.27,1.28s-1.25-.93-1.25-1.82c0-1.39.35-1.82.73-1.82.41,0,2.03,1.39,2.76,1.39.27,0,.5-.25.14-.61s-3.64-2-3.64-3.25c0-.57.27-1.17.83-1.17,1.12,0,2.1,2.8,3.26,3.64.8.57.8.23.72,0s-1.18-1.91-1.18-2.52.51-1.11,1.82-1.11,1.82.48,1.82.98-1.2,1.54-1.2,2.24c0,.2.04.42.18.42,1.04,0,2.58-3.64,3.66-3.64.4,0,1,.25,1,.81,0,.82-3.64,2.1-3.64,3.57,0,1.12,1.45-.74,2.4-.74.76,0,1.24.42,1.24,1.82,0,.62-.12,1.82-.89,1.82-.65,0-2.75-2.03-2.75-1.3,0,1.53,3.64,2.9,3.64,3.85,0,.21-.03,1.08-.82,1.08-1.09,0-2.34-3.64-3.51-3.64-.59,0,.69,1.6.69,2.37s-.71,1.26-1.82,1.26ZM2.25,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM27.54,10.65c0,.86.53,1.19,1.36,1.19s2.8-.84,2.8-3.42c0-.6,0-.61-.22-.41s-.44.48-2.43,1.02c-.75.21-1.51.75-1.51,1.61ZM44.08,6.45v6.11q0,.66-1.18.66t-1.19-.66c0-.46-.02-4.53-.02-5.78,0-1.49-.77-2.43-2-2.43s-2.65.94-2.65,3.52v4.69q0,.66-2.38.66h-1.73c-.99,0-.55-1.99-.95-1.99-.52,0-.56,2.33-3.76,2.33-2.4,0-2.59-2.32-2.59-1q0,.66-1.24.66-1.12,0-1.12-.66v-5.26c0-1.38-.49-2.95-1.99-2.95-1.64,0-2.46,1.6-2.46,2.92,0,1.13-.02,4.6-.02,5.27s0,.67-1.19.67-1.19,0-1.19-.66,0-3.3,0-5.29-.81-2.92-2.02-2.92c-1.75,0-2.63,1.6-2.63,2.92,0,1.98-.03,4.63-.03,5.29s0,.66-2.42.66h-1.69c-.99,0-.55-1.99-.98-1.99s-.58,2.33-3.74,2.33c-2.01,0-2.93-1.2-2.93-2.63s.75-2.48,2.95-3.14c2.2-.66,3.42-1.02,3.42-2.21s-1.01-1.46-1.87-1.46c-1.9,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.7-1.34,4.16-1.34,1.64,0,3.65.58,3.65,3.61,0,4.67-.03,6.03.4,6.03.32,0,.28-.73.28-1.31,0-1.32,0-6.91,0-7.27q0-.69,1.18-.69,1.16,0,1.16.69c0,2,.05,1.07.87.12.54-.62,1.38-1.18,2.84-1.18,2.9,0,2.78,2.27,3.17,2.27s.75-2.27,3.72-2.27c1.89,0,3.31,1.1,3.31,4.2,0,1.58.01,2.8.23,2.8.16,0,.39-.83,2-1.35,1.61-.52,3.79-.84,3.79-2.32,0-1.21-1.2-1.46-1.87-1.46-1.86,0-3.61,1.83-3.61,1.17v-1.7c0-.61,2.67-1.34,4.16-1.34,3.34,0,3.65,2.38,3.65,3.61,0,4.72-.04,6.04.38,6.04.31,0,.3-.5.3-1.32,0,.18,0-6.64,0-7.27q0-.66,1.23-.66,1.11,0,1.11.66c0,3.3-.03-1.06,3.73-1.06,1.34,0,2,.51,2.38.92.38.41,2.05-.44,2.91-2.51q.28-.66.85-.66.64,0,.64.66c0,.66,0,1.04,0,1.32q0,.63,2.68.63.33,0,.33,1.58c0,.43,1.19-1.94,4.24-1.94s4.65,1.71,4.65,4.96c0,.86,0,.49,0,.71q0,.62-1.61.62c-5.81,0-5.78,0-5.78.51,0,1.78,1.79,2.69,3.5,2.69,2.4,0,3.63-1.84,3.63-.52v1.09c0,.64-2.54,1.23-3.99,1.23-4.15,0-5.52-2.56-5.52-5.73,0-1.79.8-3.29.29-3.29h-1.95q-.47,0-.47,3.95c0,2.75.4,3.27,1.48,3.27s1.48-.52,1.48.14v.85c0,.82-1.51.81-2.06.81-2.53,0-3.29-1.26-3.29-4.92q0-4.1-.26-4.09c-.26,0-.35,0-.78,0-.29,0-.01.2-.01,1.91ZM54.72,4.01c-2.6,0-2.74,2.26-2.74,2.58s0,.33,2.64.33,2.64,0,2.64-.31.06-2.6-2.55-2.6Z"/>
   </svg>
-  <div class="nav-date" id="nav-date"></div>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div class="nav-date" id="nav-date"></div>
+    <button class="auth-signout" id="auth-signout-btn" style="display:none;" onclick="doSignOut()">Cerrar sesión</button>
+  </div>
 </nav>
 
 <div class="wrap">
@@ -395,10 +424,16 @@ document.getElementById('nav-date').textContent = FMTLONG(TODAY);
 
 (function(){
   const firebaseConfig = {
-    databaseURL: 'https://amante-b122b-default-rtdb.firebaseio.com'
+    apiKey: 'AIzaSyB7JIqF3TD_9iv_nV1KPZHWQ2BD01mhcvE',
+    authDomain: 'amante-b122b.firebaseapp.com',
+    databaseURL: 'https://amante-b122b-default-rtdb.firebaseio.com',
+    projectId: 'amante-b122b'
   };
   firebase.initializeApp(firebaseConfig);
 })();
+
+// Admin allowlist — only these emails can read the dashboard
+const ADMIN_EMAILS = ['julianf.barboza@gmail.com', 'sofi.barboza98@gmail.com'];
 
 let orders = [];
 let activeFilter = 'todos';
@@ -1034,28 +1069,83 @@ function handleCalModalOverlayClick(e) {
   if (e.target === document.getElementById('cal-modal-overlay')) closeCalModal();
 }
 
-// Listen to Firebase in real time — updates dashboard instantly on any device
-db.ref('orders').on('value', snapshot => {
-  const data = snapshot.val();
-  if (data) {
-    orders = Object.values(data)
-      .filter(o => o && o.id && o.name && o.products)
-      .map(o => ({
-        ...o,
-        products: Array.isArray(o.products) ? o.products : Object.values(o.products || {}),
-        log: Array.isArray(o.log) ? o.log : Object.values(o.log || {})
-      }))
-      .sort((a,b) => {
-        const da = a.createdAt ? new Date(a.createdAt) : 0;
-        const db2 = b.createdAt ? new Date(b.createdAt) : 0;
-        return db2 - da;
-      });
-  } else {
-    orders = [];
-  }
-  render();
-  if (currentView === 'production') { renderProduction(); renderCalendar(); }
+// ----- AUTH GATE -----
+// The dashboard only attaches its Firebase listener AFTER a Google sign-in
+// from an email in ADMIN_EMAILS. Anyone else is signed out immediately.
+const auth = firebase.auth();
+let _ordersListenerAttached = false;
+
+function attachOrdersListener() {
+  if (_ordersListenerAttached) return;
+  _ordersListenerAttached = true;
+  // Listen to Firebase in real time — updates dashboard instantly on any device
+  db.ref('orders').on('value', snapshot => {
+    const data = snapshot.val();
+    if (data) {
+      orders = Object.values(data)
+        .filter(o => o && o.id && o.name && o.products)
+        .map(o => ({
+          ...o,
+          products: Array.isArray(o.products) ? o.products : Object.values(o.products || {}),
+          log: Array.isArray(o.log) ? o.log : Object.values(o.log || {})
+        }))
+        .sort((a,b) => {
+          const da = a.createdAt ? new Date(a.createdAt) : 0;
+          const db2 = b.createdAt ? new Date(b.createdAt) : 0;
+          return db2 - da;
+        });
+    } else {
+      orders = [];
+    }
+    render();
+    if (currentView === 'production') { renderProduction(); renderCalendar(); }
+  });
+}
+
+const gateEl = document.getElementById('auth-gate');
+const signinBtn = document.getElementById('auth-signin-btn');
+const errorEl = document.getElementById('auth-error');
+const loadingEl = document.getElementById('auth-loading');
+const signoutBtn = document.getElementById('auth-signout-btn');
+
+function showError(msg) { errorEl.textContent = msg; loadingEl.textContent = ''; }
+function showLoading(msg) { loadingEl.textContent = msg; errorEl.textContent = ''; }
+function clearMsgs() { errorEl.textContent = ''; loadingEl.textContent = ''; }
+
+signinBtn.addEventListener('click', () => {
+  clearMsgs();
+  signinBtn.disabled = true;
+  showLoading('Abriendo Google…');
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .catch(err => { showError('No se pudo iniciar sesión: ' + (err.message || err.code)); })
+    .finally(() => { signinBtn.disabled = false; });
 });
+
+function doSignOut() {
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    gateEl.classList.remove('hidden');
+    signoutBtn.style.display = 'none';
+    clearMsgs();
+    return;
+  }
+  if (!ADMIN_EMAILS.includes(user.email)) {
+    showError('La cuenta ' + user.email + ' no está autorizada.');
+    auth.signOut();
+    return;
+  }
+  // Authorized — hide gate and start loading data
+  gateEl.classList.add('hidden');
+  signoutBtn.style.display = '';
+  attachOrdersListener();
+});
+
+// Initial state: show gate, hide loading text until user clicks
+clearMsgs();
 </script>
 
 <div class="cal-modal-overlay" id="cal-modal-overlay" onclick="handleCalModalOverlayClick(event)">
