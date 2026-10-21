@@ -101,6 +101,7 @@
     .size-row.sold-out { opacity: 0.45; }
     .size-info { display: flex; align-items: center; gap: 10px; }
     .size-label { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.05em; color: #1e1e1e; min-width: 24px; }
+    .flavor-label { font-size: 14px; color: #1e1e1e; }
     .size-stock { font-size: 12px; color: rgba(30,30,30,0.45); }
     .agotado-tag { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; background: #ede8e1; color: rgba(30,30,30,0.5); padding: 2px 8px; border-radius: 20px; border: 0.5px solid rgba(30,30,30,0.12); }
     .qty-ctrl { display: flex; align-items: center; gap: 10px; }
@@ -375,11 +376,11 @@ const CATALOG = [
     ]
   },
   {
-    category: 'Crackers',
+    category: 'Básicos amante',
     items: [
-      { id:'c1', name:'Zaatar', desc:'100 gramos', price:3000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/7f40e0f12b8026452f790c69e987a27d7da7d881/cracker.png' },
-      { id:'c2', name:'Everything Season', desc:'100 gramos', price:3000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/7f40e0f12b8026452f790c69e987a27d7da7d881/cracker.png' },
-      { id:'c3', name:'Plain', desc:'100 gramos', price:3000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/7f40e0f12b8026452f790c69e987a27d7da7d881/cracker.png' },
+      { id:'b1', name:'Granola Simple', desc:'350 gramos', price:6000, image:null }, // TODO: swap in photo
+      { id:'c', name:'Crackers', desc:'100 gramos', price:3000, image:'https://raw.githubusercontent.com/amantecr25/amantecr.github.io/7f40e0f12b8026452f790c69e987a27d7da7d881/cracker.png',
+        flavors: ['Zaatar', 'Everything Season', 'Plain'] },
     ]
   },
   {
@@ -450,7 +451,31 @@ function renderProducts() {
         ? `<img src="${item.image}" class="product-img" alt="${item.name}" onclick="openLightbox('${item.image}')">`
         : `<div class="product-img-placeholder"><span>*</span></div>`;
 
-      if (item.sizes) {
+      if (item.flavors) {
+        // One card, one − / + row per flavor (lets people mix flavors)
+        const flavorRows = item.flavors.map((fl, i) => {
+          const qty = selections[selKey(item.id, fl)]?.qty || 0;
+          return `
+            <div class="size-row">
+              <span class="flavor-label">${fl}</span>
+              <div class="qty-ctrl">
+                <button class="qty-btn" id="fm_${item.id}_${i}" onclick="chgFlavor('${item.id}',${i},-1)">−</button>
+                <span class="qty-val" id="fq_${item.id}_${i}">${qty}</span>
+                <button class="qty-btn" onclick="chgFlavor('${item.id}',${i},1)">+</button>
+              </div>
+            </div>`;
+        }).join('');
+        wrap.innerHTML = `
+          <div class="product-item-top">
+            ${imgSlot}
+            <div class="product-info-main">
+              <div class="pname">${item.name}</div>
+              ${item.desc ? `<div class="pdesc">${item.desc}</div>` : ''}
+              <div class="pprice">₡${item.price.toLocaleString('es-CR')} c/u · elegí tus sabores</div>
+            </div>
+          </div>
+          <div class="product-sizes">${flavorRows}</div>`;
+      } else if (item.sizes) {
         // Sized item (merch)
         const sizeButtons = item.sizes.map(s => {
           const key = selKey(item.id, s.label);
@@ -515,6 +540,18 @@ function chgItem(id, delta) {
   if (next === 0) delete selections[key];
   else selections[key] = { name: item.name, price: item.price, qty: next };
   document.getElementById('qi_'+id).textContent = next;
+  updateSummary();
+}
+
+function chgFlavor(id, i, delta) {
+  const item = CATALOG.flatMap(c=>c.items).find(p=>p.id===id);
+  if (!item) return;
+  const fl = item.flavors[i];
+  const key = selKey(id, fl);
+  const next = Math.max(0, (selections[key]?.qty || 0) + delta);
+  if (next === 0) delete selections[key];
+  else selections[key] = { name: item.name + ' ' + fl, price: item.price, qty: next };
+  document.getElementById('fq_'+id+'_'+i).textContent = next;
   updateSummary();
 }
 
