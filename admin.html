@@ -88,6 +88,8 @@
     .action-btn.danger:hover { color: #1e1e1e; border-color: rgba(30,30,30,0.35); background: #f5e8d0; }
     .action-btn.paid-done { background: #e8eedf; color: #2a4010; border-color: rgba(42,64,16,0.25); }
     .action-btn.paid-done:hover { opacity: 0.8; }
+    .delete-btn { font-family: 'field-gothic-no-36','field-gothic',sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 6px 10px; border-radius: 4px; border: 1px solid transparent; background: transparent; color: rgba(140,30,20,0.6); cursor: pointer; margin-left: auto; transition: all 0.15s; }
+    .delete-btn:hover { color: #8c1e14; border-color: rgba(140,30,20,0.35); background: #f8e6e0; }
 
     /* ACTIVITY */
     .activity-list { display: flex; flex-direction: column; gap: 8px; }
@@ -450,8 +452,41 @@ function saveOrders() {
   // no-op: each action saves directly to Firebase
 }
 
+function orderKey(id) { return String(id).replace('#',''); }
+
 function saveOrderToFirebase(order) {
-  db.ref('orders/' + order.id.replace('#','')).set(order);
+  // Report failures instead of failing silently
+  db.ref('orders/' + orderKey(order.id)).set(order, err => {
+    if (err) {
+      console.error('Error guardando ' + order.id, err);
+      alert('No se pudo guardar el pedido ' + order.id + '.\n\n' + (err.message || err) + '\n\nSi el pedido está trabado, podés eliminarlo con el botón "Eliminar".');
+    }
+  });
+}
+
+function restoreMerchStock(order) {
+  normalizeProducts(order.products).forEach(p => {
+    const sizeMatch = p.name && p.name.match(/Talla ([A-Z]+)/);
+    if (sizeMatch) db.ref('stock/m1/' + sizeMatch[1]).transaction(cur => (cur||0) + (p.qty||1));
+  });
+}
+
+function deleteOrder(id, e) {
+  if (e) e.stopPropagation();
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  const msg = 'Eliminar el pedido ' + id + ' de ' + o.name + '?\n\nSe borra permanentemente y no aparecerá en Historial. Esta acción no se puede deshacer.';
+  if (!confirm(msg)) return;
+  db.ref('orders/' + orderKey(id)).remove(err => {
+    if (err) {
+      console.error('Error eliminando ' + id, err);
+      alert('No se pudo eliminar el pedido ' + id + '.\n\n' + (err.message || err));
+      return;
+    }
+    // Give merch stock back unless it was already returned on cancel
+    if (o.status !== 'cancelado') restoreMerchStock(o);
+    if (expandedId === id) expandedId = null;
+  });
 }
 
 function normalizeProducts(products) {
@@ -481,14 +516,7 @@ function changeStatus(id, newStatus, e) {
   if (updated) saveOrderToFirebase(updated);
 
   // Restore merch stock if order is cancelled
-  if (newStatus === 'cancelado' && updated) {
-    updated.products.forEach(p => {
-      const sizeMatch = p.name && p.name.match(/Talla ([A-Z]+)/);
-      if (sizeMatch) {
-        db.ref('stock/m1/' + sizeMatch[1]).transaction(cur => (cur||0) + (p.qty||1));
-      }
-    });
-  }
+  if (newStatus === 'cancelado' && updated) restoreMerchStock(updated);
   render();
 }
 
@@ -631,8 +659,9 @@ function toggleExpand(id) {
   saveOrders(); render();
 }
 
+// Archived = done with: delivered and paid, or cancelled. These live in Historial.
 function isCompleted(o) {
-  return o.status === 'entregado' && o.paid;
+  return (o.status === 'entregado' && o.paid) || o.status === 'cancelado';
 }
 
 function render() {
@@ -657,9 +686,12 @@ function render() {
             <div class="order-meta" style="margin-top:2px;">${prodSummary}</div>
           </div>
         </div>
-        <div style="text-align:right;flex-shrink:0;">
-          <div class="order-amount">₡${total.toLocaleString('es-CR')}</div>
-          <div class="order-meta" style="margin-top:3px;">${o.payment}</div>
+        <div style="text-align:right;flex-shrink:0;display:flex;align-items:center;gap:12px;">
+          <div>
+            <div class="order-amount">₡${total.toLocaleString('es-CR')}</div>
+            <div class="order-meta" style="margin-top:3px;"><span class="badge ${bClass(o.status)}">${bLabel(o.status)}</span> · ${o.payment}</div>
+          </div>
+          <button class="delete-btn" title="Eliminar pedido" onclick="deleteOrder('${o.id}',event)">Eliminar</button>
         </div>
       </div>`;
     }).join('') + '</div>';
@@ -667,8 +699,12 @@ function render() {
   }
 
   // Active orders — exclude completed ones from main views
+  // (the "Cancelados" filter still shows every cancelled order)
   const activeOrders = orders.filter(o => !isCompleted(o));
-  const filtered = getSortedOrders(activeFilter==='todos' ? activeOrders : activeOrders.filter(o=>o.status===activeFilter));
+  const filtered = getSortedOrders(
+    activeFilter==='todos' ? activeOrders
+    : activeFilter==='cancelado' ? orders.filter(o=>o.status==='cancelado')
+    : activeOrders.filter(o=>o.status===activeFilter));
   if(!filtered.length) { container.innerHTML='<div class="db-empty">No hay pedidos en esta categoría.</div>'; return; }
 
   container.innerHTML = filtered.map(o => {
@@ -728,7 +764,7 @@ function render() {
           </div>
           <div style="margin-bottom:4px;">${prodRows}</div>
           <div class="order-total-row"><span>Total</span><span>₡${total.toLocaleString('es-CR')}</span></div>
-          <div class="action-row">${statusActions}${paidBtn}</div>
+          <div class="action-row">${statusActions}${paidBtn}<button class="delete-btn" onclick="deleteOrder('${o.id}',event)">Eliminar</button></div>
         </div>
         <div class="tab-panel ${tab==='log'?'active':''}">
           <div class="activity-list">${logItems}</div>
@@ -809,9 +845,18 @@ function saveManualOrder() {
     return;
   }
 
-  const counter = parseInt(localStorage.getItem('amante_counter') || '41') + 1;
-  localStorage.setItem('amante_counter', counter);
+  // Use the same shared counter as the order site so numbers never collide
+  db.ref('meta/orderCounter').transaction(cur => (cur || 41) + 1, (err, committed, snap) => {
+    if (err || !committed) {
+      alert('No se pudo asignar un número de pedido. Intentá de nuevo.\n\n' + (err ? (err.message || err) : ''));
+      return;
+    }
+    createManualOrder(snap.val(), { name, phone, date, time, canton, dir, payment, notes, products });
+  });
+}
 
+function createManualOrder(counter, f) {
+  const { name, phone, date, time, canton, dir, payment, notes, products } = f;
   const fmt = d => d.toLocaleDateString('es-CR',{day:'2-digit',month:'2-digit',year:'numeric'});
   const newOrder = {
     id: '#0' + String(counter).padStart(3,'0'),
@@ -824,7 +869,8 @@ function saveManualOrder() {
     products, notes,
     log: [{ type: 'manual', label: 'Pedido ingresado manualmente (WhatsApp)', time: FMTT() }],
     isNew: true,
-    isManual: true
+    isManual: true,
+    createdAt: new Date().toISOString()
   };
 
   saveOrderToFirebase(newOrder);
